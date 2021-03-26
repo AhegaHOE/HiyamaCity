@@ -1,0 +1,73 @@
+ErrorMessages:
+   "PlayerOnly": "&cThis Command can only be executed by a player!"
+   "setLangCommandNEArgs": "&cError: use /setlang <locale>"
+   "LocaleDoesntExist": "&cError: The locale that you wanted to select isn't supported."
+   "PlayerTooFarAway": "&cError: Your specified player is too far away from you."
+   "PlayerNotFound": "&cError: Your specified player wasn't found."
+   "CantKissSelf": "&cError: You can't kiss yourself."
+   "KussCommandErrorFalseArgs": "&cError: use /kiss <player>"
+   "MeCommandErrorFalseArgs": "&cError: use /me <activity>"
+   "OosChatCommandErrorFalseArgs": "&cError: use /oos <message>"
+   "SchreienCommandErrorFalseArgs": "&cError: use /shout <message>"
+   "WhisperCommandErrorFalseArgs": "&cError: use /whisper <message>"
+   "GamemodeCommandErrorCouldntParseNumber": "&cError: Your specified Gamemode is greater than 3 or negative."
+   "GamemodCommandErrorNoNumber": "&cError: Your specified Gamemode is not a number."
+   "GamemodeCommandErrorFalseArgs": "&cError: use /gamemode <number> [player]"
+   "OChatCommandErrorFalseArgs": "&cError: use /o <message>"
+   "TPCommandErrorFalseArgsTeleportToCoordinates": "&cError: use /tp <x> <y> <z>"
+   "TPCommandErrorFalseArgsTeleportPlayerToPlayer": "&cError: use /tp <player> [player]"
+   "TPCommandErrorFalseArgsTeleportPlayerToPlayer1": "&cError: use /tp [player] <player>"
+   "TPCommandErrorFalseArgs": "&cError: use /tp [player] <player> or /tp [player] <x> <y> <z>"
+
+SuccessMessages:
+   "LocaleSet": "&aLanguage has been set successfully!"
+   
+RoleplayMessages:
+   "Shout": " shouts: "
+   "Whisper": " whispers: "
+   "Say": " says: "
+   "Ask": " asks: "
+   "Kiss": "&d* %player% gave %target% a kiss."
+   "OutOfSituationAdds": "&c( %player% adds: %message% )"
+   
+AFK:
+   "Leave": " left the AFK-Mode."
+   "Enter": " entered the AFK-Mode."
+   "AFKMessage": "&9%target% &7is in AFK-Mode since &9%time%&7."
+   "Ping": " &9%target% &7has a ping of &9%ping%&7ms."
+      
+WelcomeMessages:
+   "WelcomeFirst": "Welcome!"
+   "WelcomeBack": "Welcome back!"
+   
+AdminDuty:
+   "AdminDutyPrefix": "&8[&cAdminduty&8]&7"
+   "AdminDutyMessageEnter": " &7You entered the &cAdminduty&7."
+   "AdminDutyMessageLeave": " &7You left the &cAdminduty&7."
+   
+BuildMode:
+   "BuildmodePrefix": "&8[&eBuildmode&8]&7"
+   "BuildmodeMessageEnter": " &7You entered the &eBuildmode&7."
+   "BuildmodeMessageLeave": " &7You left the &eBuildmode&7."
+   "BuildmodeSetOtherTargetMessage": " &e%player% &7set you into &eBuildmode&7."
+   "BuildmodeRemoveOtherTargetMessage": " &e%player% &7set you out of &eBuildmode&7."
+   "BuildmodeSetOtherPlayerMessage": " &7You set &e%target% &7into &eBuildmode&7."
+   "BuildmodeRemoveOtherPlayerMessage": " &7You set &e%target% &7out of &eBuildmode&7."
+   
+Gamemode:
+   "GamemodePrefix": "&8[&aGamemode&8]&7 "
+   "GamemodeSelfMessage": "&7Your &aGamemode &7has been changed to &a%gamemode%&7."
+   "GamemodeOtherChange": "&7You changed the &aGamemode &7of &a%target% &7to &a%gamemode%&7."
+   "GamemodeChangedByOther": "&a%player% &7changed your &aGamemode &7to &a%gamemode%&7."
+   
+Teleport:
+   "TeleportSelfToCoordinate": "&7You have been teleported to: &9%x%&7, &9%y%&7, &9%z%&7."
+   "TeleportOtherToCoordinateSelf": "&7You teleported &9%target% &7to: &9%x%&7, &9%y%&7, &9%z%&7"
+   "TeleportOtherToCoordinateOther": "&9%player% &7teleported you to: &9%x%&7, &9%y%&7, &9%z%&7."
+   "TeleportOtherToOtherSelf": "&7You teleported &9%target% &7to &9%target1%&7."
+   "TeleportOtherToOtherOther": "&9%player% &7teleported you to &9%target1%&7."
+   "TeleportOtherToOtherTarget1": "&9%player% &7teleported &9%target% &7to you."
+   "TeleportOtherToSelfMessageSelf": "&7You teleported &9%target% &7to you."
+   "TeleportOtherToSelfMessageOther": "&9%player% &7teleported you to them."
+   "TeleportSelfToPlayer": "&7You teleported yourself to &9%target%&7."
+   "TeleportOtherToSelf": "&9%player% &7teleported themself to you."

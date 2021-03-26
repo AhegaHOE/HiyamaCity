@@ -1,0 +1,34 @@
+name: Script
+version: 1.0
+main: de.AhegaHOE.main.Main
+author: AhegaHOE
+commands:
+   o:
+   gamemode:
+      aliases: [gm]
+   heal:
+   me:
+   w:
+      aliases: [whisper]
+   buildmode:
+      aliases: [bm]
+   s:
+      aliases: [schreien, shout]
+   time:
+   adminduty:
+      aliases: [aduty, admindienst]
+   afk:
+   tp:
+      aliases: [teleport, teleportieren]
+   id:
+   kuss:
+      aliases: [kiss]
+   oos:
+      aliases: [ooc]
+   call:
+   a:
+   h:
+   suicide:
+   setlang:
+      aliases: [setlanguage]
+      description: Allows the user to select their language
