@@ -4,10 +4,13 @@ main: de.AhegaHOE.main.Main
 author: AhegaHOE
 commands:
    o:
+      description: Allows the player to text global
    gamemode:
       aliases: [gm]
    heal:
+      description: Allows the player to heal themselfs
    me:
+      description: Allows the player to perform actions
    w:
       aliases: [whisper]
    buildmode:
@@ -15,20 +18,21 @@ commands:
    s:
       aliases: [schreien, shout]
    time:
+      description: Allows the player to check the reallife time
    adminduty:
       aliases: [aduty, admindienst]
    afk:
+      description: Allows the player to go in afk-mode
    tp:
       aliases: [teleport, teleportieren]
    id:
+      description: Allows the player to see informations about certain players
    kuss:
       aliases: [kiss]
    oos:
       aliases: [ooc]
-   call:
-   a:
-   h:
    suicide:
+      description: suicide
    setlang:
       aliases: [setlanguage]
-      description: Allows the user to select their language
+      description: Allows the player to select their language
