@@ -13,24 +13,23 @@ import net.md_5.bungee.api.ChatColor;
 
 public class IdCommand implements CommandExecutor {
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if(sender instanceof Player) {
-			Player p = (Player) sender;
-			if(args.length == 1) {
-				if(Bukkit.getPlayer(args[0]) != null) {
-					Player t = (Player) Bukkit.getPlayer(args[0]);
-					if(AfkCommand.Afk.contains(t)) {
-						p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "AFKMessage").replace("%target%", t.getDisplayName()).replace("%time%", AFKCheck.afkModeTimeStamp.get(t.getName())));
-					} else {
-						p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "Ping").replace("%ping%", "" +((CraftPlayer)t).getHandle().ping));
-					}
-				}
-			}
-		}
-		return false;
-	}
-	
-	
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player) {
+            Player p = (Player) sender;
+            if (args.length == 1) {
+                if (Bukkit.getPlayer(args[0]) != null) {
+                    Player t = Bukkit.getPlayer(args[0]);
+                    if (AfkCommand.Afk.contains(t)) {
+                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "AFKMessage").replace("%target%", t.getDisplayName()).replace("%time%", AFKCheck.afkModeTimeStamp.get(t.getName())));
+                    } else {
+                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "Ping").replace("%target%", t.getDisplayName()).replace("%ping%", "" + ((CraftPlayer) t).getHandle().ping));
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
 }

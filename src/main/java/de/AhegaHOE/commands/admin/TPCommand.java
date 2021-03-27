@@ -81,8 +81,8 @@ public class TPCommand implements CommandExecutor {
                         Location loc = new Location(p.getWorld(), x, y, z, p.getLocation().getYaw(),
                                 p.getLocation().getPitch());
                         t.teleport(loc);
-                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportOtherToCoordinateSelf").replace("%target%", t.getDisplayName()).replace("%x%", args[0]).replace("%y%", args[1]).replace("%z%", args[2]));
-                        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToCoordinateOther").replace("%player%", p.getDisplayName()).replace("%x%", args[0]).replace("%y%", args[1]).replace("%z%", args[2]));
+                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportOtherToCoordinateSelf").replace("%target%", t.getDisplayName()).replace("%x%", ""+x).replace("%y%", ""+y).replace("%z%", ""+z));
+                        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToCoordinateOther").replace("%player%", p.getDisplayName()).replace("%x%", ""+x).replace("%y%", ""+y).replace("%z%", ""+z));
                     }
                 }
             }
