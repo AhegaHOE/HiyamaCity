@@ -8,38 +8,38 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class MySQLFile {
 
-	public void setStandard() {
-		FileConfiguration cfg = getFileConfiguration();
+    public void setStandard() {
+        FileConfiguration cfg = getFileConfiguration();
 
-		cfg.options().copyDefaults(true);
-		cfg.addDefault("host", "losthost");
-		cfg.addDefault("port", "3306");
-		cfg.addDefault("database", "database");
-		cfg.addDefault("username", "user");
-		cfg.addDefault("password", "ucH1nNsmXSPMBCUW");
+        cfg.options().copyDefaults(true);
+        cfg.addDefault("host", "losthost");
+        cfg.addDefault("port", "3306");
+        cfg.addDefault("database", "database");
+        cfg.addDefault("username", "user");
+        cfg.addDefault("password", "ucH1nNsmXSPMBCUW");
 
-		try {
-			cfg.save(getFile());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+        try {
+            cfg.save(getFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public File getFile() {
-		return new File("plugins/Script", "mysql.yml");
-	}
+    public File getFile() {
+        return new File("plugins/Script", "mysql.yml");
+    }
 
-	private FileConfiguration getFileConfiguration() {
-		return (FileConfiguration) YamlConfiguration.loadConfiguration(getFile());
-	}
+    private FileConfiguration getFileConfiguration() {
+        return YamlConfiguration.loadConfiguration(getFile());
+    }
 
-	public void readData() {
-		FileConfiguration cfg = getFileConfiguration();
+    public void readData() {
+        FileConfiguration cfg = getFileConfiguration();
 
-		MySQL.host = cfg.getString("host");
-		MySQL.port = cfg.getString("port");
-		MySQL.database = cfg.getString("database");
-		MySQL.username = cfg.getString("username");
-		MySQL.password = cfg.getString("password");
-	}
+        MySQL.host = cfg.getString("host");
+        MySQL.port = cfg.getString("port");
+        MySQL.database = cfg.getString("database");
+        MySQL.username = cfg.getString("username");
+        MySQL.password = cfg.getString("password");
+    }
 }

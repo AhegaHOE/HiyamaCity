@@ -1,13 +1,12 @@
-package de.AhegaHOE.timecontrol;
+package de.AhegaHOE.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
+import de.AhegaHOE.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import de.AhegaHOE.main.Main;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class TimeSync {
 

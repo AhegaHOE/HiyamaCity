@@ -71,3 +71,6 @@ Teleport:
    "TeleportOtherToSelfMessageOther": "&9%player% &7teleported you to them."
    "TeleportSelfToPlayer": "&7You teleported yourself to &9%target%&7."
    "TeleportOtherToSelf": "&9%player% &7teleported themself to you."
+
+Stats:
+   "StatsCommand": "&7You have a playtime of: &b%hours%h %minutes%m&7."

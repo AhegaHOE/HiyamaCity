@@ -36,3 +36,5 @@ commands:
    setlang:
       aliases: [setlanguage]
       description: Allows the player to select their language
+   stats:
+      description: Allows the player to see their stats

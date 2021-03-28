@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Script">
+    <output-path>$PROJECT_DIR$/out/artifacts/Script</output-path>
+    <root id="archive" name="Script.jar">
+      <element id="module-output" name="HiyamaCity" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/en.yml" />
+    </root>
+  </artifact>
+</component>

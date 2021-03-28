@@ -10,7 +10,7 @@ import de.AhegaHOE.util.languageHandler;
 import net.md_5.bungee.api.ChatColor;
 
 public class OosChat implements CommandExecutor {
-    String error = "Du kannst den /oos Command nur als Spieler benutzen!";
+
 
     String msg;
 
