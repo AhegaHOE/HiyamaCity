@@ -1,12 +1,15 @@
 package de.AhegaHOE.commands.user;
 
 import de.AhegaHOE.MySQL.MySQLPointer;
+import de.AhegaHOE.util.DecimalSeperator;
 import de.AhegaHOE.util.languageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.text.DecimalFormat;
 
 public class ShowFinances implements CommandExecutor {
 
@@ -23,10 +26,15 @@ public class ShowFinances implements CommandExecutor {
             p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PlayerTooFarAway"));
             return false;
         }
+
+        int money = MySQLPointer.getMoney(p.getUniqueId());
+        int bank = MySQLPointer.getBank(p.getUniqueId());
+
+        DecimalFormat decimalFormat = DecimalSeperator.prepareFormat(',', '.', false, (byte) 0);
+
         p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "ShowFinancesMessageSelf").replace("%target%", t.getDisplayName()));
         t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "ShowFinancesMessageOther").replace("%player%", p.getDisplayName()));
-        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "ShowFinancesMoney").replace("%bank%", "" + MySQLPointer.getBank(p.getUniqueId())).replace("%money%", "" + MySQLPointer.getMoney(p.getUniqueId())));
-
+        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "ShowFinancesMoney").replace("%money%", "" + decimalFormat.format(money)).replace("%bank%", "" + decimalFormat.format(bank)));
 
         return false;
     }

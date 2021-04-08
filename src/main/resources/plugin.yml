@@ -7,36 +7,45 @@ commands:
       description: Allows the player to text global
    gamemode:
       aliases: [gm]
+      description: Allows the player to change their gamemode
    heal:
       description: Allows the player to heal themselfs
    me:
       description: Allows the player to perform actions
    w:
       aliases: [whisper]
+      description: Allows the player to whisper in roleplay
    buildmode:
       aliases: [bm]
+      description: Allows the player to enter the build mode
    s:
       aliases: [schreien, shout]
+      description: Allows the player to shout in roleplay
    time:
       description: Allows the player to check the reallife time
    adminduty:
       aliases: [aduty, admindienst]
+      description: Allows the player to enter the adminduty
    afk:
-      description: Allows the player to go in afk-mode
+      description: Allows the player to enter the afk-mode
    tp:
       aliases: [teleport, teleportieren]
+      description: Allows the player to teleport themselfs
    id:
       description: Allows the player to see informations about certain players
    kuss:
       aliases: [kiss]
+      description: Allows the player to kiss other players
    oos:
       aliases: [ooc]
+      description: Allows the player to chat out of the roleplay situation
    suicide:
-      description: suicide
+      description: Allows the player to commit suicide
    setlang:
       aliases: [setlanguage]
       description: Allows the player to select their language
    stats:
+      aliases: [money, statistics, geld]
       description: Allows the player to see their stats
    checkfinances:
       description: Allows the player to see the financial status of other players

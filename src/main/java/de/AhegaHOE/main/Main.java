@@ -112,6 +112,7 @@ public class Main extends JavaPlugin {
         getCommand("checkfinances").setExecutor(new CheckFinancesCommand());
         getCommand("showfinances").setExecutor(new ShowFinances());
         getCommand("moneymanagement").setExecutor(new MoneyManagementCommand());
+        getCommand("moneymanagement").setTabCompleter(new MoneyManagementCommand());
         getCommand("pay").setExecutor(new PayCommand());
     }
 

@@ -6,17 +6,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-public class MoneyManagementCommand implements CommandExecutor {
+public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
 
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
-        // /moneymanagement <name> "bank/money" "set/remove/add" <amount>
-        // TODO: Zahlanzeige aufhübschen sprich alle 3 Digits ein Trennpunkt einfügen.
+
 
         if (!(sender instanceof Player)) {
             sender.sendMessage(languageHandler.getMessage("en", "PlayerOnly"));
@@ -36,7 +38,7 @@ public class MoneyManagementCommand implements CommandExecutor {
             return false;
         }
 
-        if (!(args[1].equalsIgnoreCase("bank") || args[1].equalsIgnoreCase("money"))) {
+        if (!(args[1].equalsIgnoreCase("bank") || args[1].equalsIgnoreCase("purse"))) {
             p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "MoneyManagementCommandFalseArgs"));
             return false;
         }
@@ -89,7 +91,7 @@ public class MoneyManagementCommand implements CommandExecutor {
 
             }
         }
-        if (args[1].equalsIgnoreCase("money")) {
+        if (args[1].equalsIgnoreCase("purse")) {
             if (args[2].equalsIgnoreCase("set")) {
                 // Set Bank Money
                 MySQLPointer.setMoney(t.getUniqueId(), amount);
@@ -133,5 +135,25 @@ public class MoneyManagementCommand implements CommandExecutor {
 
             return false;
         }
+    }
+
+    // /moneymanagement <name> "bank/purse" "set/remove/add" <amount>
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
+        if (args.length == 2) {
+            List<String> possibilities = new ArrayList<>();
+            possibilities.add("bank");
+            possibilities.add("purse");
+            return possibilities;
+        }
+        if (args.length == 3) {
+            List<String> possibilities = new ArrayList<>();
+            possibilities.add("set");
+            possibilities.add("remove");
+            possibilities.add("add");
+            return possibilities;
+        }
+        return null;
     }
 }

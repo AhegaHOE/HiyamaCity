@@ -256,26 +256,10 @@ public class PlayerEventHandler implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
 
+
         AFKCheck.playerLastMoveTime.put(e.getPlayer(), System.currentTimeMillis());
         Player p = e.getPlayer();
         e.setJoinMessage("");
-
-        if (!MySQLPointer.isUserExists(p.getUniqueId())) {
-            p.sendMessage(ChatColor.GOLD + languageHandler.getMessage(languageHandler.getLocale(p), "WelcomeFirst"));
-            String Playername = p.getName();
-            UUID uuid = p.getUniqueId();
-            MySQLPointer.registerPlayer(uuid, Playername);
-        } else if (MySQLPointer.isUserExists(p.getUniqueId())) {
-            p.sendMessage(ChatColor.GOLD + languageHandler.getMessage(languageHandler.getLocale(p), "WelcomeBack"));
-        } else {
-            UUID uuid = p.getUniqueId();
-            String Playername = p.getName();
-            MySQLPointer.registerPlayer(uuid, Playername);
-        }
-
-        if (!MySQLPointer.getUsername(e.getPlayer().getUniqueId()).equals(e.getPlayer().getName())) {
-            MySQLPointer.updateUsername(e.getPlayer().getUniqueId(), e.getPlayer().getName());
-        }
 
         FileConfiguration config = Main.getInstance().getConfig();
         UUID uuid = p.getUniqueId();
@@ -287,6 +271,25 @@ public class PlayerEventHandler implements Listener {
         }
         String localeFileName = config.getString(uuid.toString());
         languageHandler.setLocale(p, localeFileName.toLowerCase());
+
+        if (!MySQLPointer.isUserExists(p.getUniqueId())) {
+            p.sendMessage(ChatColor.GOLD + languageHandler.getMessage(languageHandler.getLocale(p), "WelcomeFirst"));
+            String pName = p.getName();
+
+            MySQLPointer.registerPlayer(uuid, pName);
+        } else if (MySQLPointer.isUserExists(p.getUniqueId())) {
+            p.sendMessage(ChatColor.GOLD + languageHandler.getMessage(languageHandler.getLocale(p), "WelcomeBack"));
+        } else {
+
+            String pName = p.getName();
+            MySQLPointer.registerPlayer(uuid, pName);
+        }
+
+        if (!MySQLPointer.getUsername(e.getPlayer().getUniqueId()).equals(e.getPlayer().getName())) {
+            MySQLPointer.updateUsername(e.getPlayer().getUniqueId(), e.getPlayer().getName());
+        }
+
+
     }
 
     @EventHandler

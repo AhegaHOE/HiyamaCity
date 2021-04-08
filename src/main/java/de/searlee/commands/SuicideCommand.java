@@ -15,7 +15,7 @@ public class SuicideCommand implements CommandExecutor{
         if(sender instanceof Player) {
             Player p = (Player) sender;
             p.setHealth(0);
-            p.sendMessage(ChatColor.MAGIC + "rip");
+            p.sendMessage(ChatColor.MAGIC + "###" + ChatColor.DARK_PURPLE + " rip §r" + ChatColor.MAGIC + "###");
     
         } else {
         	sender.sendMessage(languageHandler.getMessage("en", "PlayerOnly"));

@@ -20,9 +20,10 @@ ErrorMessages:
    "TPCommandErrorFalseArgsTeleportPlayerToPlayer": "&cError: use /tp <player> [player]"
    "TPCommandErrorFalseArgsTeleportPlayerToPlayer1": "&cError: use /tp [player] <player>"
    "TPCommandErrorFalseArgs": "&cError: use /tp [player] <player> or /tp [player] <x> <y> <z>"
-   "MoneyManagementCommandFalseArgs": "&cError: use /moneymanagement <player> bank/money set/remove/add <amount>"
+   "MoneyManagementCommandFalseArgs": "&cError: use /moneymanagement <player> bank/purse set/remove/add <amount>"
    "PayCommandFalseArgs": "&cError: use /pay <name>"
    "NotEnoughMoney": "&cError: You don't have enough funds."
+   "CantPaySelf": "&cError: You can't give money to yourself."
 
 SuccessMessages:
    "LocaleSet": "&aLanguage has been set successfully!"

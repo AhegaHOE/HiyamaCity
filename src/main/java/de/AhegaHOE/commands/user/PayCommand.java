@@ -34,6 +34,11 @@ public class PayCommand implements CommandExecutor {
             return false;
         }
 
+        if(t.getName() == p.getName()) {
+            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "CantPaySelf"));
+            return false;
+        }
+
         if (!(p.getLocation().distance(t.getLocation()) <= 2.0D)) {
             p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PlayerTooFarAway"));
             return false;
