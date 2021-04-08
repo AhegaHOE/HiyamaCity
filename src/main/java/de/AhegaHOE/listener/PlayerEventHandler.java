@@ -280,8 +280,8 @@ public class PlayerEventHandler implements Listener {
         FileConfiguration config = Main.getInstance().getConfig();
         UUID uuid = p.getUniqueId();
         if (config.get(uuid.toString()) == null) {
-            languageHandler.setLocale(p, "en");
-            config.set(uuid.toString(), "en");
+            languageHandler.setLocale(p, "de");
+            config.set(uuid.toString(), "de");
             Main.getInstance().saveConfig();
             return;
         }

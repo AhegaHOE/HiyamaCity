@@ -4,6 +4,8 @@ ErrorMessages:
    "LocaleDoesntExist": "&cError: The locale that you wanted to select isn't supported."
    "PlayerTooFarAway": "&cError: Your specified player is too far away from you."
    "PlayerNotFound": "&cError: Your specified player wasn't found."
+   "NoNumber": "&cError: Your specified number isn't a number."
+   "NumberNegative": "&cError: Your specified number is negative but it's not allowed to be negative."
    "CantKissSelf": "&cError: You can't kiss yourself."
    "KussCommandErrorFalseArgs": "&cError: use /kiss <player>"
    "MeCommandErrorFalseArgs": "&cError: use /me <activity>"
@@ -18,6 +20,9 @@ ErrorMessages:
    "TPCommandErrorFalseArgsTeleportPlayerToPlayer": "&cError: use /tp <player> [player]"
    "TPCommandErrorFalseArgsTeleportPlayerToPlayer1": "&cError: use /tp [player] <player>"
    "TPCommandErrorFalseArgs": "&cError: use /tp [player] <player> or /tp [player] <x> <y> <z>"
+   "MoneyManagementCommandFalseArgs": "&cError: use /moneymanagement <player> bank/money set/remove/add <amount>"
+   "PayCommandFalseArgs": "&cError: use /pay <name>"
+   "NotEnoughMoney": "&cError: You don't have enough funds."
 
 SuccessMessages:
    "LocaleSet": "&aLanguage has been set successfully!"
@@ -34,7 +39,7 @@ AFK:
    "Leave": " left the AFK-Mode."
    "Enter": " entered the AFK-Mode."
    "AFKMessage": "&9%target% &7is in AFK-Mode since &9%time%&7."
-   "Ping": " &9%target% &7has a ping of &9%ping%&7ms."
+   "Ping": "&9%target% &7has a ping of &9%ping%&7ms."
       
 WelcomeMessages:
    "WelcomeFirst": "Welcome!"
@@ -73,4 +78,33 @@ Teleport:
    "TeleportOtherToSelf": "&9%player% &7teleported themself to you."
 
 Stats:
-   "StatsCommand": "&7You have a playtime of: &b%hours%h %minutes%m&7."
+   "StatsPlayerName": "&7Username: &9%player%"
+   "StatsPlayTime": "&7Playtime: &9%hours%&7h &9%minutes%&7m"
+   "StatsMoney": "&7Purse: &9%money%&7$, Bank: &9%bank%&7$"
+
+CheckFinances:
+   "CheckFinancesCommand1": "&7The financial status of &9%target% &7is:"
+   "CheckFinancesCommand2": "&7Purse: &9%money%&7$, Bank: &9%bank%&7$"
+
+ShowFinances:
+   "ShowFinancesMessageSelf": "&7You showed &9%target% &7your finances."
+   "ShowFinancesMessageOther": "&9%player% &7showed you their finances."
+   "ShowFinancesMoney": "&7Purse: &9%money%&7$, Bank: &9%bank%&7$"
+
+MoneyManagement:
+   "SetBankSelf": "&7You set the bank account of &9%target% &7to &9%amount%&7$."
+   "SetBankOther": "&9%player% &7set your bank account to &9%amount%&7$."
+   "RemoveBankSelf": "&7You removed &9%amount%&7$ from the bank account of &9%target%&7."
+   "RemoveBankOther": "&9%player% &7removed &9%amount%&7$ from you bank account."
+   "AddBankSelf": "&7You added &9%amount%&7$ to the bank account of &9%target%&7."
+   "AddBankOther": "&9%player% &7added &9%amount%&7$ to your bank account."
+   "SetMoneySelf": "&7You set the purse of &9%target% &7to &9%amount%&7$."
+   "SetMoneyOther": "&9%player% &7set your purse to &9%amount%&7$."
+   "RemoveMoneySelf": "&7You removed &9%amount%&7$ from the purse of &9%target%&7."
+   "RemoveMoneyOther": "&9%player% &7removed &9%amount%&7$ from your purse."
+   "AddMoneySelf": "&7You added &9%amount%&7$ to the purse of &9%target%&7."
+   "AddMoneyOther": "&9%player% &7added &9%amount%&7$ to your purse."
+
+Pay:
+   "PayMessageSelf": "&7You payed &9%target% &9%amount%&7$."
+   "PayMessageOther": "&9%player% &7payed you %9%amount%&7$."

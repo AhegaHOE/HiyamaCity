@@ -4,6 +4,8 @@ import de.AhegaHOE.MySQL.MySQL;
 import de.AhegaHOE.MySQL.MySQLFile;
 import de.AhegaHOE.chat.Chat;
 import de.AhegaHOE.commands.admin.*;
+import de.AhegaHOE.commands.admin.moneymanaging.CheckFinancesCommand;
+import de.AhegaHOE.commands.admin.moneymanaging.MoneyManagementCommand;
 import de.AhegaHOE.commands.user.*;
 import de.AhegaHOE.commands.user.languages.setLangCommand;
 import de.AhegaHOE.listener.*;
@@ -40,13 +42,18 @@ public class Main extends JavaPlugin {
         file.readData();
         MySQL.connect();
 
+
         try {
             PreparedStatement ps = MySQL.getConnection().prepareStatement(
                     "CREATE TABLE IF NOT EXISTS PLAYERDATA (UUID VARCHAR(40),PLAYERNAME VARCHAR(16),PLAYEDHOURS INT(255), PLAYEDMINUTES INT(255))");
+            PreparedStatement ps1 = MySQL.getConnection().prepareStatement(
+                    "CREATE TABLE IF NOT EXISTS MONEY (UUID VARCHAR(40), MONEY INT(255), BANK INT(255))");
 
 
             ps.executeUpdate();
-
+            ps1.executeUpdate();
+            ps.close();
+            ps1.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,6 +87,10 @@ public class Main extends JavaPlugin {
         getCommand("suicide").setExecutor(new SuicideCommand());
         getCommand("setlang").setExecutor(new setLangCommand());
         getCommand("stats").setExecutor(new StatsCommand());
+        getCommand("checkfinances").setExecutor(new CheckFinancesCommand());
+        getCommand("showfinances").setExecutor(new ShowFinances());
+        getCommand("moneymanagement").setExecutor(new MoneyManagementCommand());
+        getCommand("pay").setExecutor(new PayCommand());
     }
 
     private void loadListeners() {

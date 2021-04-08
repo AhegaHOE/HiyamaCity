@@ -5,6 +5,8 @@
       <element id="module-output" name="HiyamaCity" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/en.yml" />
+      <element id="library" level="project" name="Maven: com.zaxxer:HikariCP:4.0.3" />
+      <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
     </root>
   </artifact>
 </component>

@@ -75,4 +75,8 @@ public final class AFKCheck implements Listener {
         }
     }
 
+    public static boolean isAFK(Player p) {
+        return AfkCommand.Afk.contains(p);
+    }
+
 }

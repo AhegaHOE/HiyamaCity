@@ -41,5 +41,6 @@ public class MySQLFile {
         MySQL.database = cfg.getString("database");
         MySQL.username = cfg.getString("username");
         MySQL.password = cfg.getString("password");
+
     }
 }

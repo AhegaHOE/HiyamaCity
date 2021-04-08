@@ -38,3 +38,11 @@ commands:
       description: Allows the player to select their language
    stats:
       description: Allows the player to see their stats
+   checkfinances:
+      description: Allows the player to see the financial status of other players
+   showfinances:
+      description: Allows the player to show other their finances
+   moneymanagement:
+      description: Allows the player to manage the money of other players
+   pay:
+      description: Allows the player to pay money to other players

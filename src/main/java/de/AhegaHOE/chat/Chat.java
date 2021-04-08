@@ -14,7 +14,7 @@ public class Chat implements Listener {
         Player p1 = e.getPlayer();
 
         String message = e.getMessage();
-		
+
 
         e.setCancelled(true);
 
@@ -22,26 +22,26 @@ public class Chat implements Listener {
 
             if (p1.getLocation().distance(p2.getLocation()) <= 8.0D) {
                 if (message.contains("?")) {
-                    p2.sendMessage("§f " + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Ask") + "§f" + message);
+                    p2.sendMessage("§f" + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Ask") + "§f" + message);
                     continue;
                 }
-                p2.sendMessage("§f " + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Say") + "§f" + message);
+                p2.sendMessage("§f" + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Say") + "§f" + message);
                 continue;
             }
             if (p1.getLocation().distance(p2.getLocation()) <= 16.0D) {
                 if (message.contains("?")) {
-                    p2.sendMessage("§7 " + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Ask") + "§7" + message);
+                    p2.sendMessage("§7" + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Ask") + "§7" + message);
                     continue;
                 }
-                p2.sendMessage("§7 " + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Say") + "§7" + message);
+                p2.sendMessage("§7" + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Say") + "§7" + message);
                 continue;
             }
             if (p1.getLocation().distance(p2.getLocation()) <= 24.0D) {
                 if (message.contains("?")) {
-                    p2.sendMessage("§8 " + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Ask") + "§8" + message);
+                    p2.sendMessage("§8" + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Ask") + "§8" + message);
                     continue;
                 }
-                p2.sendMessage("§8 " + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Say") + "§8" + message);
+                p2.sendMessage("§8" + p1.getDisplayName() + languageHandler.getMessage(languageHandler.getLocale(p2), "Say") + "§8" + message);
             }
         }
     }
