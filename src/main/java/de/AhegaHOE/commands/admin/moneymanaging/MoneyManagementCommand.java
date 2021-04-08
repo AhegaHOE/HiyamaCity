@@ -1,6 +1,7 @@
 package de.AhegaHOE.commands.admin.moneymanaging;
 
 import de.AhegaHOE.MySQL.MySQLPointer;
+import de.AhegaHOE.util.DecimalSeperator;
 import de.AhegaHOE.util.languageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -9,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -57,14 +59,18 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
         }
 
         UUID uuid = t.getUniqueId();
+
+        DecimalFormat decimalFormat = DecimalSeperator.prepareFormat(',', '.', false, (byte) 0);
+
+
         int amount = Integer.parseInt(args[3]);
         int currentMoney = MySQLPointer.getMoney(uuid);
         if (args[1].equalsIgnoreCase("bank")) {
             if (args[2].equalsIgnoreCase("set")) {
                 // Set Bank Money
                 MySQLPointer.setBank(t.getUniqueId(), amount);
-                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "SetBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", "" + amount));
-                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "SetBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", "" + amount));
+                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "SetBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "SetBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
             }
             if (args[2].equalsIgnoreCase("remove")) {
@@ -72,22 +78,22 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
                 if (amount > currentMoney) {
                     // Remove currentMoney
                     MySQLPointer.removeMoneyBank(uuid, currentMoney);
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", "" + currentMoney));
-                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", "" + currentMoney));
+                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
+                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
 
                 } else {
                     // Remove Amount
                     MySQLPointer.removeMoneyBank(uuid, amount);
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", "" + amount));
-                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", "" + amount));
+                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
                 }
             }
             if (args[2].equalsIgnoreCase("add")) {
                 // Adds Bank Money
                 MySQLPointer.addMoneyBank(uuid, amount);
-                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "AddBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", "" + amount));
-                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "AddBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", "" + amount));
+                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "AddBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "AddBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
             }
         }
@@ -95,8 +101,8 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
             if (args[2].equalsIgnoreCase("set")) {
                 // Set Bank Money
                 MySQLPointer.setMoney(t.getUniqueId(), amount);
-                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "SetMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", "" + amount));
-                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "SetMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", "" + amount));
+                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "SetMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "SetMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
             }
             if (args[2].equalsIgnoreCase("remove")) {
@@ -104,22 +110,22 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
                 if (amount > currentMoney) {
                     // Remove currentMoney
                     MySQLPointer.removeMoney(uuid, currentMoney);
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", "" + currentMoney));
-                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", "" + currentMoney));
+                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
+                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
 
                 } else {
                     // Remove Amount
                     MySQLPointer.removeMoney(uuid, amount);
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", "" + amount));
-                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", "" + amount));
+                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
                 }
             }
             if (args[2].equalsIgnoreCase("add")) {
                 // Adds Bank Money
                 MySQLPointer.addMoney(uuid, amount);
-                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "AddMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", "" + amount));
-                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "AddMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", "" + amount));
+                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "AddMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "AddMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
             }
         }
