@@ -15,11 +15,14 @@ import de.AhegaHOE.util.TimeSync;
 import de.AhegaHOE.util.languageHandler;
 import de.searlee.commands.SuicideCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class Main extends JavaPlugin {
 
@@ -58,6 +61,24 @@ public class Main extends JavaPlugin {
             e.printStackTrace();
         }
 
+        FileConfiguration config = Main.getInstance().getConfig();
+
+
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            UUID uuid = all.getUniqueId();
+
+
+            if (config.get(uuid.toString()) == null) {
+                languageHandler.setLocale(all, "de");
+                config.set(uuid.toString(), "de");
+                Main.getInstance().saveConfig();
+                return;
+            }
+            String localeFileName = config.getString(uuid.toString());
+            languageHandler.setLocale(all, localeFileName.toLowerCase());
+
+
+        }
     }
 
     public void onDisable() {
@@ -86,6 +107,7 @@ public class Main extends JavaPlugin {
         getCommand("oos").setExecutor(new OosChat());
         getCommand("suicide").setExecutor(new SuicideCommand());
         getCommand("setlang").setExecutor(new setLangCommand());
+        getCommand("setlang").setTabCompleter(new setLangCommand());
         getCommand("stats").setExecutor(new StatsCommand());
         getCommand("checkfinances").setExecutor(new CheckFinancesCommand());
         getCommand("showfinances").setExecutor(new ShowFinances());
