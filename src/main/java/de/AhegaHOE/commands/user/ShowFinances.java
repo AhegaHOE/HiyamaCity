@@ -19,9 +19,15 @@ public class ShowFinances implements CommandExecutor {
 
         if (!(sender instanceof Player)) return false;
         Player p = (Player) sender;
-        if (args.length != 1) return false;
+        if (args.length != 1) {
+            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "ShowFinancesFalseArgs"));
+            return false;
+        }
         Player t = Bukkit.getPlayer(args[0]);
-        if (t == null) return false;
+        if (t == null) {
+            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PlayerNotFound"));
+            return false;
+        }
         if (!(p.getLocation().distance(t.getLocation()) <= 8.0D)) {
             p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PlayerTooFarAway"));
             return false;

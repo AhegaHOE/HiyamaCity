@@ -2,6 +2,7 @@ package de.AhegaHOE.util;
 
 import de.AhegaHOE.main.Main;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -10,10 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class languageHandler {
 
@@ -60,9 +58,8 @@ public class languageHandler {
             e.printStackTrace();
         }
 
-        for (File file : langFolder.listFiles()) {
+        Arrays.stream(langFolder.listFiles()).forEach(file -> {
             Map<String, String> localeMessages = new HashMap<>();
-
             FileConfiguration lang = YamlConfiguration.loadConfiguration(file);
             for (String key : lang.getKeys(false)) {
                 for (String messName : lang.getConfigurationSection(key).getKeys(false)) {
@@ -74,6 +71,7 @@ public class languageHandler {
             messages.put(fileName, localeMessages);
             files.add(fileName);
             System.out.println(file.getName() + "loaded!");
-        }
+        });
     }
+
 }

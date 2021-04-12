@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,6 +63,7 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
 
         DecimalFormat decimalFormat = DecimalSeperator.prepareFormat(',', '.', false, (byte) 0);
 
+        // TODO:
 
         int amount = Integer.parseInt(args[3]);
         int currentMoney = MySQLPointer.getMoney(uuid);
@@ -72,8 +74,7 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
                 p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "SetBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
                 t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "SetBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
-            }
-            if (args[2].equalsIgnoreCase("remove")) {
+            } else if (args[2].equalsIgnoreCase("remove")) {
                 // Removes Bank Money
                 if (amount > currentMoney) {
                     // Remove currentMoney
@@ -88,24 +89,21 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
                     t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
                 }
-            }
-            if (args[2].equalsIgnoreCase("add")) {
+            } else if (args[2].equalsIgnoreCase("add")) {
                 // Adds Bank Money
                 MySQLPointer.addMoneyBank(uuid, amount);
                 p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "AddBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
                 t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "AddBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
             }
-        }
-        if (args[1].equalsIgnoreCase("purse")) {
+        } else if (args[1].equalsIgnoreCase("purse")) {
             if (args[2].equalsIgnoreCase("set")) {
                 // Set Bank Money
                 MySQLPointer.setMoney(t.getUniqueId(), amount);
                 p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "SetMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
                 t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "SetMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
-            }
-            if (args[2].equalsIgnoreCase("remove")) {
+            } else if (args[2].equalsIgnoreCase("remove")) {
                 // Removes Bank Money
                 if (amount > currentMoney) {
                     // Remove currentMoney
@@ -120,8 +118,7 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
                     t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
                 }
-            }
-            if (args[2].equalsIgnoreCase("add")) {
+            } else if (args[2].equalsIgnoreCase("add")) {
                 // Adds Bank Money
                 MySQLPointer.addMoney(uuid, amount);
                 p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "AddMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
@@ -143,21 +140,14 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
         }
     }
 
-    // /moneymanagement <name> "bank/purse" "set/remove/add" <amount>
-
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
         if (args.length == 2) {
-            List<String> possibilities = new ArrayList<>();
-            possibilities.add("bank");
-            possibilities.add("purse");
+            List<String> possibilities = new ArrayList<>(Arrays.asList("bank", "purse"));
             return possibilities;
         }
         if (args.length == 3) {
-            List<String> possibilities = new ArrayList<>();
-            possibilities.add("set");
-            possibilities.add("remove");
-            possibilities.add("add");
+            List<String> possibilities = new ArrayList<>(Arrays.asList("set", "remove", "add"));
             return possibilities;
         }
         return null;

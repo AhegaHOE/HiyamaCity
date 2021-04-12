@@ -19,9 +19,9 @@ public class StatsCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
         if (!(sender instanceof Player) || args.length == 1) {
             Player t = Bukkit.getPlayer(args[0]);
-
-            //sender.sendMessage(ChatColor.GRAY + "Der Spieler " + ChatColor.AQUA + t.getDisplayName() + ChatColor.GRAY + " hat eine Spielzeit von: " + ChatColor.AQUA + MySQLPointer.getPlayedHours(t.getUniqueId()) + "h " + MySQLPointer.getPlayedMinutes(t.getUniqueId()) + "m" + ChatColor.GRAY + ".");
+            // TODO: STATS COMMAND FÜR DIE CONSOLE
         }
+
         if (args.length == 0) {
             Player p = (Player) sender;
 
@@ -35,7 +35,6 @@ public class StatsCommand implements CommandExecutor {
             p.sendMessage(ChatColor.GRAY + languageHandler.getMessage(languageHandler.getLocale(p), "StatsPlayTime").replace("%hours%", "" + MySQLPointer.getPlayedHours(p.getUniqueId())).replace("%minutes%", "" + MySQLPointer.getPlayedMinutes(p.getUniqueId())));
             p.sendMessage(ChatColor.GRAY + languageHandler.getMessage(languageHandler.getLocale(p), "StatsMoney").replace("%money%", "" + decimalFormat.format(money)).replace("%bank%", "" + decimalFormat.format(bank)));
             p.sendMessage(ChatColor.DARK_GRAY + "==============================");
-            //p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "StatsCommand").replace("%hours%", "" + MySQLPointer.getPlayedHours(p.getUniqueId())).replace("%minutes%", "" + MySQLPointer.getPlayedMinutes(p.getUniqueId())));
 
         }
         return false;

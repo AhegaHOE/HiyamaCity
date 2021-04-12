@@ -31,14 +31,8 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.BeaconInventory;
@@ -256,13 +250,15 @@ public class PlayerEventHandler implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
 
+        Player p = e.getPlayer();
+        UUID uuid = p.getUniqueId();
 
         AFKCheck.playerLastMoveTime.put(e.getPlayer(), System.currentTimeMillis());
-        Player p = e.getPlayer();
+
         e.setJoinMessage("");
 
         FileConfiguration config = Main.getInstance().getConfig();
-        UUID uuid = p.getUniqueId();
+
         if (config.get(uuid.toString()) == null) {
             languageHandler.setLocale(p, "de");
             config.set(uuid.toString(), "de");
@@ -272,15 +268,14 @@ public class PlayerEventHandler implements Listener {
         String localeFileName = config.getString(uuid.toString());
         languageHandler.setLocale(p, localeFileName.toLowerCase());
 
-        if (!MySQLPointer.isUserExists(p.getUniqueId())) {
+        if (!MySQLPointer.isUserExists(uuid)) {
             p.sendMessage(ChatColor.GOLD + languageHandler.getMessage(languageHandler.getLocale(p), "WelcomeFirst"));
             String pName = p.getName();
 
             MySQLPointer.registerPlayer(uuid, pName);
-        } else if (MySQLPointer.isUserExists(p.getUniqueId())) {
+        } else if (MySQLPointer.isUserExists(uuid)) {
             p.sendMessage(ChatColor.GOLD + languageHandler.getMessage(languageHandler.getLocale(p), "WelcomeBack"));
         } else {
-
             String pName = p.getName();
             MySQLPointer.registerPlayer(uuid, pName);
         }
@@ -288,7 +283,6 @@ public class PlayerEventHandler implements Listener {
         if (!MySQLPointer.getUsername(e.getPlayer().getUniqueId()).equals(e.getPlayer().getName())) {
             MySQLPointer.updateUsername(e.getPlayer().getUniqueId(), e.getPlayer().getName());
         }
-
 
     }
 
@@ -300,6 +294,17 @@ public class PlayerEventHandler implements Listener {
             AFKCheck.playerLastMoveTime.remove(e.getPlayer());
         }
         e.setQuitMessage("");
+    }
+
+    @EventHandler
+    public void onBucketEmpty(PlayerBucketEmptyEvent e) {
+        Player p = e.getPlayer();
+        Material mat = e.getBucket();
+
+        if (mat.equals(Material.LAVA_BUCKET)) {
+            e.setCancelled(true);
+        }
+
     }
 
 }

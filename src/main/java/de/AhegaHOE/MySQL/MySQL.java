@@ -18,7 +18,7 @@ public class MySQL {
     public static void connect() {
         if (!isConnected()) {
             try {
-                con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username,
+                con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useJDBCCompliantTimezoneShift=true&&serverTimezone=UTC&&useUnicode=true&autoReconnect=true", username,
                         password);
                 Bukkit.getConsoleSender().sendMessage("§8[§bMySQL§8] §aVerbindung erfolgreich hergestellt!");
             } catch (SQLException e) {

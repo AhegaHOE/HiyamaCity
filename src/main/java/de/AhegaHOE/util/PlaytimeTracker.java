@@ -1,6 +1,5 @@
 package de.AhegaHOE.util;
 
-import de.AhegaHOE.MySQL.MySQL;
 import de.AhegaHOE.MySQL.MySQLPointer;
 import de.AhegaHOE.listener.AFKCheck;
 import de.AhegaHOE.main.Main;

@@ -10,7 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import de.AhegaHOE.util.languageHandler;
-import net.md_5.bungee.api.ChatColor;
 
 public class BuildModeCommand implements CommandExecutor {
 

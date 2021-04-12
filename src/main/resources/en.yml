@@ -21,9 +21,12 @@ ErrorMessages:
    "TPCommandErrorFalseArgsTeleportPlayerToPlayer1": "&cError: use /tp [player] <player>"
    "TPCommandErrorFalseArgs": "&cError: use /tp [player] <player> or /tp [player] <x> <y> <z>"
    "MoneyManagementCommandFalseArgs": "&cError: use /moneymanagement <player> bank/purse set/remove/add <amount>"
-   "PayCommandFalseArgs": "&cError: use /pay <name>"
+   "PayCommandFalseArgs": "&cError: use /pay <player>"
    "NotEnoughMoney": "&cError: You don't have enough funds."
    "CantPaySelf": "&cError: You can't give money to yourself."
+   "ShowFinancesFalseArgs": "&cError: use /showfinances <player>"
+   "BankCommandFalseArgs": "&cError: use /bank deposit/withdraw <amount>"
+   "RegisterATMFalseArgs": "&cError: use /registeratm"
 
 SuccessMessages:
    "LocaleSet": "&aLanguage has been set successfully!"
@@ -109,3 +112,7 @@ MoneyManagement:
 Pay:
    "PayMessageSelf": "&7You payed &9%target% &9%amount%&7$."
    "PayMessageOther": "&9%player% &7payed you %9%amount%&7$."
+
+Bank:
+   "BankDeposit": "&7You deposited &9%amount%&7$ in the Bank."
+   "BankWithdraw": "&7You withdrawn &9%amount%&7$ from your Bank."

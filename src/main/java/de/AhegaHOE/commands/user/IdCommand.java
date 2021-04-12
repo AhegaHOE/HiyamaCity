@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 
 import de.AhegaHOE.listener.AFKCheck;
 import de.AhegaHOE.util.languageHandler;
-import net.md_5.bungee.api.ChatColor;
 
 public class IdCommand implements CommandExecutor {
 

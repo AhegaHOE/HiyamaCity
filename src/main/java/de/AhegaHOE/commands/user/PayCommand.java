@@ -1,6 +1,5 @@
 package de.AhegaHOE.commands.user;
 
-import de.AhegaHOE.MySQL.MySQL;
 import de.AhegaHOE.MySQL.MySQLPointer;
 import de.AhegaHOE.util.languageHandler;
 import org.bukkit.Bukkit;

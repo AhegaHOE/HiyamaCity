@@ -97,6 +97,8 @@ public class TimeCommand implements CommandExecutor {
 					break;
 				}
 
+				// TODO: NACHRICHT FÜR DEN SPIELER IN DER JEWEILIGEN SPRACHE EINFÜGEN
+
 				p.sendMessage(ChatColor.GRAY + "Es ist " + ChatColor.BLUE + tag + ChatColor.GRAY + ", der "
 						+ ChatColor.BLUE + d + ". " + monat + " " + y + ChatColor.GRAY + " um " + ChatColor.BLUE + h
 						+ ":" + min + ":" + sec + ChatColor.GRAY + " Uhr.");

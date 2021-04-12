@@ -114,6 +114,8 @@ public class Main extends JavaPlugin {
         getCommand("moneymanagement").setExecutor(new MoneyManagementCommand());
         getCommand("moneymanagement").setTabCompleter(new MoneyManagementCommand());
         getCommand("pay").setExecutor(new PayCommand());
+        getCommand("bank").setExecutor(new BankCommand());
+        getCommand("bank").setTabCompleter(new BankCommand());
     }
 
     private void loadListeners() {
