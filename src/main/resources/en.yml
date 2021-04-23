@@ -27,33 +27,36 @@ ErrorMessages:
    "ShowFinancesFalseArgs": "&cError: use /showfinances <player>"
    "BankCommandFalseArgs": "&cError: use /bank deposit/withdraw <amount>"
    "RegisterATMFalseArgs": "&cError: use /registeratm"
+   "CheckPlayerFalseArgs": "&cError: use /checkplayer <player>"
+   "ClearChatFalseArgs": "&cError: use /clearchat [player]"
+   "InvSeeFalseArgs": "&cError: use /invsee <player>"
 
 SuccessMessages:
    "LocaleSet": "&aLanguage has been set successfully!"
-   
+
 RoleplayMessages:
    "Shout": " shouts: "
    "Whisper": " whispers: "
    "Say": " says: "
    "Ask": " asks: "
-   "Kiss": "&d* %player% gave %target% a kiss."
-   "OutOfSituationAdds": "&c( %player% adds: %message% )"
-   
+   "Kiss": "&d* %player%&d gave %target%&d a kiss."
+   "OutOfSituationAdds": "&c( %player% &cadds: %message% )"
+
 AFK:
-   "Leave": " left the AFK-Mode."
-   "Enter": " entered the AFK-Mode."
+   "Leave": " &6left the AFK-Mode."
+   "Enter": " &6entered the AFK-Mode."
    "AFKMessage": "&9%target% &7is in AFK-Mode since &9%time%&7."
    "Ping": "&9%target% &7has a ping of &9%ping%&7ms."
-      
+
 WelcomeMessages:
    "WelcomeFirst": "Welcome!"
    "WelcomeBack": "Welcome back!"
-   
+
 AdminDuty:
    "AdminDutyPrefix": "&8[&cAdminduty&8]&7"
    "AdminDutyMessageEnter": " &7You entered the &cAdminduty&7."
    "AdminDutyMessageLeave": " &7You left the &cAdminduty&7."
-   
+
 BuildMode:
    "BuildmodePrefix": "&8[&eBuildmode&8]&7"
    "BuildmodeMessageEnter": " &7You entered the &eBuildmode&7."
@@ -62,13 +65,13 @@ BuildMode:
    "BuildmodeRemoveOtherTargetMessage": " &e%player% &7set you out of &eBuildmode&7."
    "BuildmodeSetOtherPlayerMessage": " &7You set &e%target% &7into &eBuildmode&7."
    "BuildmodeRemoveOtherPlayerMessage": " &7You set &e%target% &7out of &eBuildmode&7."
-   
+
 Gamemode:
    "GamemodePrefix": "&8[&aGamemode&8]&7 "
    "GamemodeSelfMessage": "&7Your &aGamemode &7has been changed to &a%gamemode%&7."
    "GamemodeOtherChange": "&7You changed the &aGamemode &7of &a%target% &7to &a%gamemode%&7."
    "GamemodeChangedByOther": "&a%player% &7changed your &aGamemode &7to &a%gamemode%&7."
-   
+
 Teleport:
    "TeleportSelfToCoordinate": "&7You have been teleported to: &9%x%&7, &9%y%&7, &9%z%&7."
    "TeleportOtherToCoordinateSelf": "&7You teleported &9%target% &7to: &9%x%&7, &9%y%&7, &9%z%&7"
@@ -116,3 +119,26 @@ Pay:
 Bank:
    "BankDeposit": "&7You deposited &9%amount%&7$ in the Bank."
    "BankWithdraw": "&7You withdrawn &9%amount%&7$ from your Bank."
+
+CheckPlayer:
+   "Healthlevel": "&7Healthlevel: &9%amount%"
+   "Foodlevel": "&7Foodlevel: &9%amount%"
+   "LastPlayed": "&7Last played: &9%time%"
+   "FirstPlayed": "&7First played: &9%time%"
+
+ChatClear:
+   "ChatClear": "&4&l%player% &4&lcleared the chat!"
+   "ChatClearOther": "&7You cleared the &achat&7 of &9%player%&7."
+
+Tablist:
+   "TablistPlayersOnline": "&7%current%&8/&7%max%&a players online."
+   "TablistHeader": "&b&lHiyamaCity &r&7- &cFantasy &7& &cReallife Roleplay"
+
+Vanish:
+   "VanishHide": "&7You are now &9vanished&7... - no one can &9see you &7now."
+   "VanishShow": "&7You are no longer &9vanished&7... - everyone can &9see you &7now."
+
+CommandSpy:
+   "CommandSpyEnable": "&aCommandSpy enabled!"
+   "CommandSpyDisable": "&cCommandSpy disabled!"
+   "CommandSpyMessage": "&9%player% &7issued server command: &8%message%"

@@ -5,34 +5,27 @@ import java.util.List;
 import java.util.UUID;
 
 import de.AhegaHOE.MySQL.MySQLPointer;
+import de.AhegaHOE.commands.admin.CommandSpy;
+import de.AhegaHOE.commands.admin.Vanish;
 import de.AhegaHOE.main.Main;
+import de.AhegaHOE.util.Tablist;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Chest;
-import org.bukkit.block.Dispenser;
-import org.bukkit.block.DoubleChest;
-import org.bukkit.block.Dropper;
-import org.bukkit.block.Hopper;
-import org.bukkit.block.ShulkerBox;
+import org.bukkit.block.*;
+import org.bukkit.command.Command;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Donkey;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Minecart;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.BeaconInventory;
@@ -63,8 +56,16 @@ public class PlayerEventHandler implements Listener {
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
+        Block block = e.getBlock();
         if (!(AdminDutyCommand.adminduty.contains(p.getName()) || BuildModeCommand.buildmode.contains(p.getName()))) {
             e.setCancelled(true);
+        } else if (block.getType() == Material.ITEM_FRAME || block.getType() == Material.PAINTING) {
+            if (!(AdminDutyCommand.adminduty.contains(p.getName()))) {
+                e.setCancelled(true);
+            }
+        } else {
+            Location loc = block.getLocation();
+            Block two = loc.getChunk().getWorld().getBlockAt(block.getX(), block.getZ(), block.getY());
         }
     }
 
@@ -149,6 +150,7 @@ public class PlayerEventHandler implements Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
+        Player p = e.getPlayer();
         AFKCheck.playerLastMoveTime.put(e.getPlayer(), System.currentTimeMillis());
         if (AfkCommand.Afk.contains(e.getPlayer())) {
             AFKCheck.removeAFK(e.getPlayer());
@@ -161,7 +163,7 @@ public class PlayerEventHandler implements Listener {
             }
         }
 
-        Player p = e.getPlayer();
+
         List<String> cmds = Arrays.asList("minecraft:me", "minecraft:msg", "minecraft:tell", "minecraft:trigger",
                 "minecraft:w", "?", "about", "bukkit:?", "bukkit:about", "bukkit:help", "bukkit:pl", "bukkit:plugins",
                 "bukkit:ver", "bukkit:version", "msg", "tell", "trigger", "help", "?", "about", "pl", "plugins", "ver",
@@ -174,6 +176,14 @@ public class PlayerEventHandler implements Listener {
                 }
 
             });
+        }
+
+
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            if (!all.hasPermission("commandspy.bypass")) {
+                for (Player spying : CommandSpy.getSpyingPlayers())
+                    spying.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "CommandSpyMessage").replace("%player%", p.getDisplayName()).replace("%message%", e.getMessage()));
+            }
         }
     }
 
@@ -206,7 +216,6 @@ public class PlayerEventHandler implements Listener {
                 }
             }
         }
-
     }
 
     @EventHandler
@@ -250,8 +259,16 @@ public class PlayerEventHandler implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
 
+
         Player p = e.getPlayer();
         UUID uuid = p.getUniqueId();
+
+        for (Player vanish : Vanish.vanishedPlayers) {
+            if (!p.hasPermission("vanish.bypass")) {
+                p.hidePlayer(Main.getInstance(), vanish);
+            }
+        }
+
 
         AFKCheck.playerLastMoveTime.put(e.getPlayer(), System.currentTimeMillis());
 
@@ -271,7 +288,6 @@ public class PlayerEventHandler implements Listener {
         if (!MySQLPointer.isUserExists(uuid)) {
             p.sendMessage(ChatColor.GOLD + languageHandler.getMessage(languageHandler.getLocale(p), "WelcomeFirst"));
             String pName = p.getName();
-
             MySQLPointer.registerPlayer(uuid, pName);
         } else if (MySQLPointer.isUserExists(uuid)) {
             p.sendMessage(ChatColor.GOLD + languageHandler.getMessage(languageHandler.getLocale(p), "WelcomeBack"));
@@ -284,27 +300,89 @@ public class PlayerEventHandler implements Listener {
             MySQLPointer.updateUsername(e.getPlayer().getUniqueId(), e.getPlayer().getName());
         }
 
+        Tablist.updateTab();
+
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        languageHandler.removePlayer(e.getPlayer());
-        AFKCheck.removeAFK(e.getPlayer());
+        Player p = e.getPlayer();
+        languageHandler.removePlayer(p);
+        AFKCheck.removeAFK(p);
+        if (Vanish.isVanished(p)) {
+            Vanish.removeVanish(p);
+        }
         if (AFKCheck.playerLastMoveTime.containsKey(e.getPlayer())) {
             AFKCheck.playerLastMoveTime.remove(e.getPlayer());
         }
         e.setQuitMessage("");
+
+        Tablist.updateTab();
+
+
     }
 
     @EventHandler
     public void onBucketEmpty(PlayerBucketEmptyEvent e) {
         Player p = e.getPlayer();
         Material mat = e.getBucket();
-
-        if (mat.equals(Material.LAVA_BUCKET)) {
+        if (!(AdminDutyCommand.adminduty.contains(p.getName()))) {
             e.setCancelled(true);
         }
 
+
     }
+
+    @EventHandler
+    public void onHangingBreak(HangingBreakByEntityEvent e) {
+        if (!(e.getEntity() instanceof ItemFrame) && !(e.getEntity() instanceof Painting)) {
+            return;
+        }
+        if (!(e.getRemover() instanceof Player)) {
+            return;
+        }
+        Player p = (Player) e.getRemover();
+
+        if (AdminDutyCommand.adminduty.contains(p.getName())) {
+            return;
+        }
+        e.setCancelled(true);
+    }
+
+
+    @EventHandler
+    public void onHangingPlace(HangingPlaceEvent e) {
+        Player p = e.getPlayer();
+        if (AdminDutyCommand.adminduty.contains(p.getName())) {
+            return;
+        }
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractAtEntityEvent e) {
+        Player p = e.getPlayer();
+        if (AdminDutyCommand.adminduty.contains(p.getName())) {
+            return;
+        }
+        if (e.getRightClicked() != null) {
+            if (e.getRightClicked().getType() == EntityType.ITEM_FRAME)
+                e.setCancelled(true);
+        }
+    }
+
+
+    @EventHandler
+    public void onInteract(PlayerInteractEntityEvent e) {
+        Player p = e.getPlayer();
+        if (AdminDutyCommand.adminduty.contains(p.getName())) {
+            return;
+        }
+        if (e.getRightClicked() != null) {
+            if (e.getRightClicked().getType() == EntityType.ITEM_FRAME)
+                e.setCancelled(true);
+        }
+    }
+
 
 }

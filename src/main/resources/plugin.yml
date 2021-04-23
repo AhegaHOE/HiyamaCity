@@ -57,3 +57,17 @@ commands:
       description: Allows the player to pay money to other players
    bank:
       description: Allows the player to access their bank account.
+   checkplayer:
+      description: Allows the player to check different parameters of other players.
+   clearchat:
+      description: Allows the player to clear the chat.
+      aliases: [cc]
+   vanish:
+      description: Allows the player to hide themselfes.
+      aliases: [v]
+   commandspy:
+      description: Allows the player to spy the commands that other players execute.
+      aliases: [notify, cmdspy]
+   inventorysee:
+      description: Allows the player to see the inventory of other players.
+      aliases: [invsee]

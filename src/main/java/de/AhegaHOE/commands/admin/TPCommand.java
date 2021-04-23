@@ -19,17 +19,17 @@ public class TPCommand implements CommandExecutor {
         }
         if (args.length == 1 && sender instanceof Player) {
 
-                Player p = (Player) sender;
-                if (p.hasPermission("tp")) {
-                    Player t = Bukkit.getPlayer(args[0]);
-                    if (t != null) {
-                        p.teleport(t.getLocation());
-                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportSelfToPlayer").replace("%target%", t.getDisplayName()));
-                        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToSelf").replace("%player%", p.getDisplayName()));
-                    } else {
-                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TPCommandErrorFalseArgsTeleportPlayerToPlayer1"));
-                    }
+            Player p = (Player) sender;
+            if (p.hasPermission("tp")) {
+                Player t = Bukkit.getPlayer(args[0]);
+                if (t != null) {
+                    p.teleport(t.getLocation());
+                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportSelfToPlayer").replace("%target%", t.getDisplayName()));
+                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToSelf").replace("%player%", p.getDisplayName()));
+                } else {
+                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TPCommandErrorFalseArgsTeleportPlayerToPlayer1"));
                 }
+            }
 
         } else if (args.length == 2) {
             Player p = (Player) sender;
@@ -42,11 +42,11 @@ public class TPCommand implements CommandExecutor {
                         p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportOtherToSelfMessageSelf").replace("%target%", t.getDisplayName()));
                         t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToSelfMessageOther").replace("%player%", p.getDisplayName()));
                     } else {
-                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportOtherToOtherSelf").replace("%target%", t.getDisplayName().replace("%target1%", t1.getDisplayName())));
+                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportOtherToOtherSelf").replace("%target%", t.getDisplayName()).replace("%target1%", t1.getDisplayName()));
 
-                        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToOtherOther").replace("%player%", p.getDisplayName().replace("%target1", t1.getDisplayName())));
+                        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToOtherOther").replace("%player%", p.getDisplayName()).replace("%target1%", t1.getDisplayName()));
 
-                        t1.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t1), "TeleportOtherToOtherTarget1").replace("%player%", p.getDisplayName().replace("%target%", t.getDisplayName())));
+                        t1.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t1), "TeleportOtherToOtherTarget1").replace("%player%", p.getDisplayName()).replace("%target%", t.getDisplayName()));
                     }
 
                 } else {
@@ -80,8 +80,8 @@ public class TPCommand implements CommandExecutor {
                         Location loc = new Location(p.getWorld(), x, y, z, p.getLocation().getYaw(),
                                 p.getLocation().getPitch());
                         t.teleport(loc);
-                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportOtherToCoordinateSelf").replace("%target%", t.getDisplayName()).replace("%x%", ""+x).replace("%y%", ""+y).replace("%z%", ""+z));
-                        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToCoordinateOther").replace("%player%", p.getDisplayName()).replace("%x%", ""+x).replace("%y%", ""+y).replace("%z%", ""+z));
+                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportOtherToCoordinateSelf").replace("%target%", t.getDisplayName()).replace("%x%", "" + x).replace("%y%", "" + y).replace("%z%", "" + z));
+                        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToCoordinateOther").replace("%player%", p.getDisplayName()).replace("%x%", "" + x).replace("%y%", "" + y).replace("%z%", "" + z));
                     }
                 }
             }

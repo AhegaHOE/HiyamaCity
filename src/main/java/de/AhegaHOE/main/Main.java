@@ -11,10 +11,12 @@ import de.AhegaHOE.commands.user.languages.setLangCommand;
 import de.AhegaHOE.listener.*;
 import de.AhegaHOE.ranks.RankScoreboard;
 import de.AhegaHOE.util.PlaytimeTracker;
+import de.AhegaHOE.util.Tablist;
 import de.AhegaHOE.util.TimeSync;
 import de.AhegaHOE.util.languageHandler;
 import de.searlee.commands.SuicideCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -79,6 +81,10 @@ public class Main extends JavaPlugin {
 
 
         }
+
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            Tablist.setTab(all);
+        }
     }
 
     public void onDisable() {
@@ -116,6 +122,11 @@ public class Main extends JavaPlugin {
         getCommand("pay").setExecutor(new PayCommand());
         getCommand("bank").setExecutor(new BankCommand());
         getCommand("bank").setTabCompleter(new BankCommand());
+        getCommand("checkplayer").setExecutor(new CheckPlayer());
+        getCommand("clearchat").setExecutor(new ClearChat());
+        getCommand("vanish").setExecutor(new Vanish());
+        getCommand("commandspy").setExecutor(new CommandSpy());
+        getCommand("inventorysee").setExecutor(new InventorySee());
     }
 
     private void loadListeners() {
@@ -131,10 +142,10 @@ public class Main extends JavaPlugin {
 
     private void loadRunnables() {
         RankScoreboard.loadScoreboards();
-        AfkCommand.loadAFK();
         TimeSync.setTime();
         AFKCheck.checkAFK();
         PlaytimeTracker.startPlaytimeTracking();
+
     }
 
 

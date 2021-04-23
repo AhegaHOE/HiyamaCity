@@ -1,6 +1,7 @@
 package de.AhegaHOE.commands.user.languages;
 
 import de.AhegaHOE.main.Main;
+import de.AhegaHOE.util.Tablist;
 import de.AhegaHOE.util.languageHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,6 +32,7 @@ public class setLangCommand implements CommandExecutor, TabCompleter {
         languageHandler.setLocale(p, fileName);
         if (languageHandler.files.contains(args[0])) {
             p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "LocaleSet"));
+
         }
         return false;
     }

@@ -19,19 +19,19 @@ public class SchreienCommand implements CommandExecutor {
 				String message = String.join(" ", (CharSequence[]) args);
 				for (Player t : Bukkit.getOnlinePlayers()) {
 					if (p.getLocation().distance(t.getLocation()) <= 32.0D) {
-						t.sendMessage(ChatColor.WHITE + p.getDisplayName()
+						t.sendMessage(ChatColor.WHITE + p.getDisplayName() + "§f"
 								+ languageHandler.getMessage(languageHandler.getLocale(t), "Shout") + message);
 						continue;
 					}
 
 					if (p.getLocation().distance(t.getLocation()) <= 48.0D) {
-						t.sendMessage(ChatColor.GRAY + p.getDisplayName()
+						t.sendMessage(ChatColor.GRAY + p.getDisplayName() + "§7"
 								+ languageHandler.getMessage(languageHandler.getLocale(t), "Shout") + message);
 						continue;
 					}
 
 					if (p.getLocation().distance(t.getLocation()) <= 64.0D) {
-						t.sendMessage(ChatColor.DARK_GRAY + p.getDisplayName()
+						t.sendMessage(ChatColor.DARK_GRAY + p.getDisplayName() + "§8"
 								+ languageHandler.getMessage(languageHandler.getLocale(t), "Shout") + message);
 					}
 				}
