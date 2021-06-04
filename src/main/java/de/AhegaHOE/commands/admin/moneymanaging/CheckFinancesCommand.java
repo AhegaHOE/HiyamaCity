@@ -2,7 +2,6 @@ package de.AhegaHOE.commands.admin.moneymanaging;
 
 import de.AhegaHOE.MySQL.MySQLPointer;
 import de.AhegaHOE.util.DecimalSeperator;
-import de.AhegaHOE.util.languageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,8 +27,8 @@ public class CheckFinancesCommand implements CommandExecutor {
 
         DecimalFormat decimalFormat = DecimalSeperator.prepareFormat(',', '.', false, (byte) 0);
 
-        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "CheckFinancesCommand1").replace("%target%", t.getDisplayName()));
-        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "CheckFinancesCommand2").replace("%money%", "" + decimalFormat.format(money)).replace("%bank%", "" + decimalFormat.format(bank)));
+        p.sendMessage("§7Der Finanzstatus von §9%target% §7ist:".replace("%target%", t.getDisplayName()));
+        p.sendMessage("§7Geld: §9%money%§7$, Bank: §9%bank%§7$".replace("%money%", "" + decimalFormat.format(money)).replace("%bank%", "" + decimalFormat.format(bank)));
         return false;
     }
 }

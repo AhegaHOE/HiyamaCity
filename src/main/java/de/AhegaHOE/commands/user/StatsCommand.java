@@ -2,7 +2,6 @@ package de.AhegaHOE.commands.user;
 
 import de.AhegaHOE.MySQL.MySQLPointer;
 import de.AhegaHOE.util.DecimalSeperator;
-import de.AhegaHOE.util.languageHandler;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -31,9 +30,9 @@ public class StatsCommand implements CommandExecutor {
             DecimalFormat decimalFormat = DecimalSeperator.prepareFormat(',', '.', false, (byte) 0);
 
             p.sendMessage(ChatColor.DARK_GRAY + "==============================");
-            p.sendMessage(ChatColor.GRAY + languageHandler.getMessage(languageHandler.getLocale(p), "StatsPlayerName").replace("%player%", p.getDisplayName()));
-            p.sendMessage(ChatColor.GRAY + languageHandler.getMessage(languageHandler.getLocale(p), "StatsPlayTime").replace("%hours%", "" + MySQLPointer.getPlayedHours(p.getUniqueId())).replace("%minutes%", "" + MySQLPointer.getPlayedMinutes(p.getUniqueId())));
-            p.sendMessage(ChatColor.GRAY + languageHandler.getMessage(languageHandler.getLocale(p), "StatsMoney").replace("%money%", "" + decimalFormat.format(money)).replace("%bank%", "" + decimalFormat.format(bank)));
+            p.sendMessage(ChatColor.GRAY + "§7Spielername: §9%player%".replace("%player%", p.getDisplayName()));
+            p.sendMessage(ChatColor.GRAY + "§7Spielzeit: §9%hours%§7 std. §9%minutes%§7 min.".replace("%hours%", "" + MySQLPointer.getPlayedHours(p.getUniqueId())).replace("%minutes%", "" + MySQLPointer.getPlayedMinutes(p.getUniqueId())));
+            p.sendMessage(ChatColor.GRAY + "§7Geld: §9%money%§7$, Bank: §9%bank%§7$".replace("%money%", "" + decimalFormat.format(money)).replace("%bank%", "" + decimalFormat.format(bank)));
             p.sendMessage(ChatColor.DARK_GRAY + "==============================");
 
         }

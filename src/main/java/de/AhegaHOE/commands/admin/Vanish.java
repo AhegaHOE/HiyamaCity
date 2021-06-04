@@ -2,7 +2,6 @@ package de.AhegaHOE.commands.admin;
 
 import de.AhegaHOE.main.Main;
 import de.AhegaHOE.util.Tablist;
-import de.AhegaHOE.util.languageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,24 +30,12 @@ public class Vanish implements CommandExecutor {
 
         if (isVanished(p)) {
             removeVanish(p);
+            p.sendMessage("§7Du bist nun nicht mehr im §9vanish§7... - jeder kann §9dich jetzt wieder sehen§7.");
 
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "VanishShow"));
-            for (Player all : Bukkit.getOnlinePlayers()) {
-                all.showPlayer(Main.getInstance(), p);
-            }
-
-            Tablist.updateTab();
 
         } else if (!isVanished(p)) {
             setVanish(p);
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "VanishHide"));
-            for (Player all : Bukkit.getOnlinePlayers()) {
-                if (!all.hasPermission("vanish.bypass")) {
-                    all.hidePlayer(Main.getInstance(), p);
-                }
-            }
-
-            Tablist.updateTab();
+            p.sendMessage("§7Du bist nun im §9vanish§7... - niemand kann §9dich jetzt sehen§7.");
 
         }
 
@@ -57,16 +44,34 @@ public class Vanish implements CommandExecutor {
 
     public static void setVanish(Player p) {
         vanishedPlayers.add(p);
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            if (!all.hasPermission("vanish.bypass")) {
+                all.hidePlayer(Main.getInstance(), p);
+            }
+        }
+        Tablist.updateTab();
 
     }
 
     public static void removeVanish(Player p) {
         vanishedPlayers.remove(p);
-
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            all.showPlayer(Main.getInstance(), p);
+        }
+        Tablist.updateTab();
     }
 
     public static boolean isVanished(Player p) {
         return vanishedPlayers.contains(p);
     }
+
+
+    public static void removeAllPlayersVanish() {
+        for (Player all : Vanish.vanishedPlayers) {
+            removeVanish(all);
+
+        }
+    }
+
 
 }

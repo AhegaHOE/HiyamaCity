@@ -1,11 +1,8 @@
 package de.AhegaHOE.commands.user;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
 
-import de.AhegaHOE.util.languageHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +19,7 @@ public class TimeCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
 
-                DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.forLanguageTag(languageHandler.getLocale(p)));
+                DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.forLanguageTag("de"));
                 long time = System.currentTimeMillis();
 
                 p.sendMessage(ChatColor.BLUE + formatter.format(time));

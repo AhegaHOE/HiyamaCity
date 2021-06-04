@@ -1,7 +1,6 @@
 package de.AhegaHOE.commands.user;
 
 import de.AhegaHOE.MySQL.MySQLPointer;
-import de.AhegaHOE.util.languageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,31 +14,31 @@ public class PayCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(languageHandler.getMessage("en", "PlayerOnly"));
+            sender.sendMessage("§cDieser Befehl kann nur als Spieler ausgeführt werden!");
             return false;
         }
 
         Player p = (Player) sender;
 
         if (args.length != 2) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PayCommandFalseArgs"));
+            p.sendMessage("§cFehler: Benutze /pay <Spieler> <Anzahl>");
             return false;
         }
 
         Player t = Bukkit.getPlayer(args[0]);
 
         if (t == null) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PlayerNotFound"));
+            p.sendMessage("§cFehler: Der angegebene Spieler wurde nicht gefunden.");
             return false;
         }
 
-        if(t.getName() == p.getName()) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "CantPaySelf"));
+        if (t.getName() == p.getName()) {
+            p.sendMessage("§cFehler: Du kannst dir selbst kein Geld geben.");
             return false;
         }
 
         if (!(p.getLocation().distance(t.getLocation()) <= 2.0D)) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PlayerTooFarAway"));
+            p.sendMessage("§cFehler: Der angegebene Spieler ist zu weit weg.");
             return false;
         }
 
@@ -47,11 +46,11 @@ public class PayCommand implements CommandExecutor {
         int amount = Integer.parseInt(args[1]);
 
         if (!(MySQLPointer.hasEnoughMoney(p.getUniqueId(), amount))) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "NotEnoughMoney"));
+            p.sendMessage("§cFehler: Du hast nicht genug Geld.");
             return false;
         } else {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PayMessageSelf").replace("%target%", t.getDisplayName()).replace("%amount%", "" + amount));
-            t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "PayMessageOther").replace("%player%", p.getDisplayName()).replace("%amount%", "" + amount));
+            p.sendMessage("§7Du hast §9%target% §9%amount%§7$ zugesteckt.".replace("%target%", t.getDisplayName()).replace("%amount%", "" + amount));
+            t.sendMessage("§9%player% §7hat dir §9%amount%§7$ zugesteckt.".replace("%player%", p.getDisplayName()).replace("%amount%", "" + amount));
             MySQLPointer.removeMoney(p.getUniqueId(), amount);
             MySQLPointer.addMoneyBank(t.getUniqueId(), amount);
         }

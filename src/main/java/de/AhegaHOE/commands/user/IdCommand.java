@@ -8,7 +8,6 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import de.AhegaHOE.listener.AFKCheck;
-import de.AhegaHOE.util.languageHandler;
 
 import java.text.DateFormat;
 import java.util.Locale;
@@ -24,9 +23,9 @@ public class IdCommand implements CommandExecutor {
                     if (AfkCommand.Afk.contains(t)) {
                         DateFormat formatterTime = DateFormat.getTimeInstance(DateFormat.FULL, Locale.forLanguageTag("de"));
                         long time = Long.parseLong(String.valueOf(AFKCheck.afkModeTimeStamp));
-                        sender.sendMessage(languageHandler.getMessage("de", "AFKMessage").replace("%target%", t.getDisplayName()).replace("%time%", formatterTime.format(time)));
+                        sender.sendMessage("§9%target% §7ist seit §9%time% §7im AFK-Modus.".replace("%target%", t.getDisplayName()).replace("%time%", formatterTime.format(time)));
                     } else {
-                        sender.sendMessage(languageHandler.getMessage("de", "Ping").replace("%target%", t.getDisplayName()).replace("%ping%", "" + ((CraftPlayer) t).getHandle().ping));
+                        sender.sendMessage("§9%target% §7hat einen Ping von §9%ping%§7ms.".replace("%target%", t.getDisplayName()).replace("%ping%", "" + ((CraftPlayer) t).getHandle().ping));
                     }
                 }
             }
@@ -36,11 +35,11 @@ public class IdCommand implements CommandExecutor {
                 if (Bukkit.getPlayer(args[0]) != null) {
                     Player t = Bukkit.getPlayer(args[0]);
                     if (AfkCommand.Afk.contains(t)) {
-                        DateFormat formatterTime = DateFormat.getTimeInstance(DateFormat.FULL, Locale.forLanguageTag(languageHandler.getLocale(p)));
+                        DateFormat formatterTime = DateFormat.getTimeInstance(DateFormat.FULL, Locale.forLanguageTag("de"));
                         long time = AFKCheck.afkModeTimeStamp.get(t.getName());
-                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "AFKMessage").replace("%target%", t.getDisplayName()).replace("%time%", formatterTime.format(time)));
+                        p.sendMessage("§9%target% §7ist seit §9%time% §7im AFK-Modus.".replace("%target%", t.getDisplayName()).replace("%time%", formatterTime.format(time)));
                     } else {
-                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "Ping").replace("%target%", t.getDisplayName()).replace("%ping%", "" + ((CraftPlayer) t).getHandle().ping));
+                        p.sendMessage("§9%target% §7hat einen Ping von §9%ping%§7ms.".replace("%target%", t.getDisplayName()).replace("%ping%", "" + ((CraftPlayer) t).getHandle().ping));
                     }
                 }
             }

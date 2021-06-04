@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import de.AhegaHOE.util.languageHandler;
 import net.md_5.bungee.api.ChatColor;
 
 public class SuicideCommand implements CommandExecutor{
@@ -18,7 +17,7 @@ public class SuicideCommand implements CommandExecutor{
             p.sendMessage(ChatColor.MAGIC + "###" + ChatColor.DARK_PURPLE + " rip §r" + ChatColor.MAGIC + "###");
     
         } else {
-        	sender.sendMessage(languageHandler.getMessage("en", "PlayerOnly"));
+        	sender.sendMessage("§cDieser Befehl kann nur als Spieler ausgeführt werden!");
         }
         
         return false;

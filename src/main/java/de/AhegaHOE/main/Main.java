@@ -4,19 +4,22 @@ import de.AhegaHOE.MySQL.MySQL;
 import de.AhegaHOE.MySQL.MySQLFile;
 import de.AhegaHOE.chat.Chat;
 import de.AhegaHOE.commands.admin.*;
+import de.AhegaHOE.commands.admin.atm.registerATM;
 import de.AhegaHOE.commands.admin.moneymanaging.CheckFinancesCommand;
 import de.AhegaHOE.commands.admin.moneymanaging.MoneyManagementCommand;
 import de.AhegaHOE.commands.user.*;
-import de.AhegaHOE.commands.user.languages.setLangCommand;
+import de.AhegaHOE.listener.AFK.*;
 import de.AhegaHOE.listener.*;
+import de.AhegaHOE.listener.PlayerJoinEvent.PlayerJoinEvent_JoinMessage;
+import de.AhegaHOE.listener.PlayerJoinEvent.PlayerJoinEvent_NPC;
+import de.AhegaHOE.listener.PlayerJoinEvent.PlayerJoinEvent_Vanish;
+import de.AhegaHOE.listener.PlayerJoinEvent.PlayerJoinEvent_WelcomePlayer;
+import de.AhegaHOE.listener.PlayerQuitEvent.PlayerQuitEvent_QuitMessage;
+import de.AhegaHOE.listener.PlayerQuitEvent.PlayerQuitEvent_Vanish;
 import de.AhegaHOE.ranks.RankScoreboard;
-import de.AhegaHOE.util.PlaytimeTracker;
-import de.AhegaHOE.util.Tablist;
-import de.AhegaHOE.util.TimeSync;
-import de.AhegaHOE.util.languageHandler;
+import de.AhegaHOE.util.*;
 import de.searlee.commands.SuicideCommand;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -24,7 +27,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.UUID;
 
 public class Main extends JavaPlugin {
 
@@ -38,7 +40,6 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         instance = this;
         loadConfigs();
-        languageHandler.loadMessages();
         loadCommands();
         loadListeners();
         loadRunnables();
@@ -46,41 +47,33 @@ public class Main extends JavaPlugin {
         file.setStandard();
         file.readData();
         MySQL.connect();
+        ItemBuilder.generateItems();
+        NPCHandler.spawnNPCs();
 
 
         try {
             PreparedStatement ps = MySQL.getConnection().prepareStatement(
-                    "CREATE TABLE IF NOT EXISTS PLAYERDATA (UUID VARCHAR(40),PLAYERNAME VARCHAR(16),PLAYEDHOURS INT(255), PLAYEDMINUTES INT(255))");
+                    "CREATE TABLE IF NOT EXISTS PLAYERDATA (UUID VARCHAR(40),PLAYERNAME VARCHAR(16), " +
+                            "PLAYEDHOURS INT(255), PLAYEDMINUTES INT(255))");
             PreparedStatement ps1 = MySQL.getConnection().prepareStatement(
                     "CREATE TABLE IF NOT EXISTS MONEY (UUID VARCHAR(40), MONEY INT(255), BANK INT(255))");
+            PreparedStatement ps2 = MySQL.getConnection().prepareStatement(
+                    "CREATE TABLE IF NOT EXISTS BANS (UUID VARCHAR(40), START VARCHAR(255), END VARCHAR(255), " +
+                            "REASON VARCHAR(255), PLAYERNAME VARCHAR(16), BANNER VARCHAR(16))");
 
 
             ps.executeUpdate();
             ps1.executeUpdate();
+            ps2.executeUpdate();
             ps.close();
             ps1.close();
+            ps2.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         FileConfiguration config = Main.getInstance().getConfig();
-
-
-        for (Player all : Bukkit.getOnlinePlayers()) {
-            UUID uuid = all.getUniqueId();
-
-
-            if (config.get(uuid.toString()) == null) {
-                languageHandler.setLocale(all, "de");
-                config.set(uuid.toString(), "de");
-                Main.getInstance().saveConfig();
-                return;
-            }
-            String localeFileName = config.getString(uuid.toString());
-            languageHandler.setLocale(all, localeFileName.toLowerCase());
-
-
-        }
 
         for (Player all : Bukkit.getOnlinePlayers()) {
             Tablist.setTab(all);
@@ -88,6 +81,7 @@ public class Main extends JavaPlugin {
     }
 
     public void onDisable() {
+        Vanish.removeAllPlayersVanish();
         MySQL.disconnect();
     }
 
@@ -95,6 +89,7 @@ public class Main extends JavaPlugin {
         getConfig().options().copyDefaults(false);
         saveConfig();
     }
+
 
     private void loadCommands() {
         getCommand("o").setExecutor(new OChat());
@@ -112,8 +107,6 @@ public class Main extends JavaPlugin {
         getCommand("kuss").setExecutor(new KussCommand());
         getCommand("oos").setExecutor(new OosChat());
         getCommand("suicide").setExecutor(new SuicideCommand());
-        getCommand("setlang").setExecutor(new setLangCommand());
-        getCommand("setlang").setTabCompleter(new setLangCommand());
         getCommand("stats").setExecutor(new StatsCommand());
         getCommand("checkfinances").setExecutor(new CheckFinancesCommand());
         getCommand("showfinances").setExecutor(new ShowFinances());
@@ -127,16 +120,51 @@ public class Main extends JavaPlugin {
         getCommand("vanish").setExecutor(new Vanish());
         getCommand("commandspy").setExecutor(new CommandSpy());
         getCommand("inventorysee").setExecutor(new InventorySee());
+        getCommand("kick").setExecutor(new KickPlayer());
+        getCommand("dice").setExecutor(new DiceCommand());
+        getCommand("coinflip").setExecutor(new HeadsOrTailsCommand());
+        getCommand("registeratm").setExecutor(new registerATM());
+        getCommand("forum").setExecutor(new ForumCommand());
+
+
     }
 
     private void loadListeners() {
+        this.pm.registerEvents(new PlayerJoinEvent_WelcomePlayer(), this);
         this.pm.registerEvents(new Rank_JoinListener(), this);
         this.pm.registerEvents(new Chat(), this);
-        this.pm.registerEvents(new PlayerEventHandler(), this);
+        this.pm.registerEvents(new PlayerInteractEvent_RightClickSign(), this);
+        this.pm.registerEvents(new BlockHandler(), this);
         this.pm.registerEvents(new ServerListPingEvent_MOTD(), this);
         this.pm.registerEvents(new AFKCheck(), this);
         this.pm.registerEvents(new DamageHandler(), this);
         this.pm.registerEvents(new PlaytimeTracker(), this);
+        this.pm.registerEvents(new DropHandler(), this);
+        this.pm.registerEvents(new DoorHandler(), this);
+        this.pm.registerEvents(new EntitySpawnEvent_DisableMobSpawns(), this);
+        this.pm.registerEvents(new FoodLevelChangeEvent_FoodLevelHandler(), this);
+        this.pm.registerEvents(new InventoryOpenEvent_DisableInvOpen(), this);
+        this.pm.registerEvents(new PlayerBucketEmptyEvent(), this);
+        this.pm.registerEvents(new PlayerCommandPreprocessEvent_DisableCommandContainingVanishPlayers(), this);
+        this.pm.registerEvents(new PlayerCommandPreprocessEvent_UnknownCommand(), this);
+        this.pm.registerEvents(new PlayerCommandPreprocessEvent_CommandSpy(), this);
+        this.pm.registerEvents(new PlayerCommandPreprocessEvent_DisableCommands(), this);
+        this.pm.registerEvents(new PlayerCommandPreprocessEvent_AFK(), this);
+        this.pm.registerEvents(new PlayerDeathEvent_DeathHandler(), this);
+        this.pm.registerEvents(new PlayerInteractEvent_ItemsFrames(), this);
+        this.pm.registerEvents(new PlayerInteractEvent_AFK(), this);
+        this.pm.registerEvents(new PlayerPortalEvent_DisablePortals(), this);
+        this.pm.registerEvents(new VehicleDamageEvent_DisableVehDmg(), this);
+        this.pm.registerEvents(new AsyncPlayerChatEvent_AFK(), this);
+        this.pm.registerEvents(new EntityDamageByEntityEvent_AFK(), this);
+        this.pm.registerEvents(new PlayerMoveEvent_AFK(), this);
+        this.pm.registerEvents(new PlayerQuitEvent_AFK(), this);
+        this.pm.registerEvents(new PlayerJoinEvent_SetupAFK(), this);
+        this.pm.registerEvents(new PlayerJoinEvent_JoinMessage(), this);
+        this.pm.registerEvents(new PlayerJoinEvent_Vanish(), this);
+        this.pm.registerEvents(new PlayerQuitEvent_QuitMessage(), this);
+        this.pm.registerEvents(new PlayerQuitEvent_Vanish(), this);
+        this.pm.registerEvents(new PlayerJoinEvent_NPC(), this);
 
     }
 

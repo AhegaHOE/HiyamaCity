@@ -2,7 +2,6 @@ package de.AhegaHOE.commands.admin.moneymanaging;
 
 import de.AhegaHOE.MySQL.MySQLPointer;
 import de.AhegaHOE.util.DecimalSeperator;
-import de.AhegaHOE.util.languageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,38 +23,38 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
 
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(languageHandler.getMessage("en", "PlayerOnly"));
+            sender.sendMessage("§cDieser Befehl kann nur als Spieler ausgeführt werden!");
             return false;
         }
         Player p = (Player) sender;
 
         if (args.length != 4) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "MoneyManagementCommandFalseArgs"));
+            p.sendMessage("§cFehler: Benutze /moneymanagement <Spieler> bank/purse set/remove/add <Anzahl>");
             return false;
         }
 
         Player t = Bukkit.getPlayer(args[0]);
 
         if (t == null) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PlayerNotFound"));
+            p.sendMessage("§cFehler: Der angegebene Spieler wurde nicht gefunden.");
             return false;
         }
 
         if (!(args[1].equalsIgnoreCase("bank") || args[1].equalsIgnoreCase("purse"))) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "MoneyManagementCommandFalseArgs"));
+            p.sendMessage("§cFehler: Benutze /moneymanagement <Spieler> bank/purse set/remove/add <Anzahl>");
             return false;
         }
         if (!(args[2].equalsIgnoreCase("set") || args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("add"))) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "MoneyManagementCommandFalseArgs"));
+            p.sendMessage("§cFehler: Benutze /moneymanagement <Spieler> bank/purse set/remove/add <Anzahl>");
             return false;
         }
 
         if (!(isInt(args[3]))) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "NoNumber"));
+            p.sendMessage("§cFehler: Du hast keine gültige Zahl angegeben.");
             return false;
         }
         if (args[3].startsWith("-")) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "NumberNegative"));
+            p.sendMessage("§cFehler: Deine angegebene Zahl darf nicht negativ sein.");
             return false;
         }
 
@@ -71,58 +70,58 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
             if (args[2].equalsIgnoreCase("set")) {
                 // Set Bank Money
                 MySQLPointer.setBank(t.getUniqueId(), amount);
-                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "SetBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
-                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "SetBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                p.sendMessage("§7Du hast das Bankkonto von §9%target% §7auf §9%amount%§7$ gesetzt.".replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                t.sendMessage("§9%player% §7hat dein Bankkonto auf §9%amount%§7$ gesetzt.".replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
             } else if (args[2].equalsIgnoreCase("remove")) {
                 // Removes Bank Money
                 if (amount > currentMoney) {
                     // Remove currentMoney
                     MySQLPointer.removeMoneyBank(uuid, currentMoney);
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
-                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
+                    p.sendMessage("§7Du hast §9%amount%§7$ des Bankkonto von §9%target%§7 entfernt.".replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
+                    t.sendMessage("§9%player% §7hat §9%amount%§7$ von deinem Bankkonto entfernt.".replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
 
                 } else {
                     // Remove Amount
                     MySQLPointer.removeMoneyBank(uuid, amount);
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
-                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                    p.sendMessage("§7Du hast §9%amount%§7$ des Bankkonto von §9%target%§7 entfernt.".replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                    t.sendMessage("§9%player% §7hat §9%amount%§7$ von deinem Bankkonto entfernt.".replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
                 }
             } else if (args[2].equalsIgnoreCase("add")) {
                 // Adds Bank Money
                 MySQLPointer.addMoneyBank(uuid, amount);
-                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "AddBankSelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
-                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "AddBankOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                p.sendMessage("§7Du hast §9%amount%§7$ dem Bankkonto von §9%target%§7 hinzugefügt.".replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                t.sendMessage("§9%player% §7hat §9%amount%§7$ deinem Bankkonto hinzugefügt.".replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
             }
         } else if (args[1].equalsIgnoreCase("purse")) {
             if (args[2].equalsIgnoreCase("set")) {
                 // Set Bank Money
                 MySQLPointer.setMoney(t.getUniqueId(), amount);
-                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "SetMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
-                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "SetMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                p.sendMessage("§7Du hast das Portemonnaie von §9%target% §7auf §9%amount%§7$ gesetzt.".replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                t.sendMessage("§9%player% §7hat dein Portemonnaie auf §9%amount%§7$ gesetzt.".replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
             } else if (args[2].equalsIgnoreCase("remove")) {
                 // Removes Bank Money
                 if (amount > currentMoney) {
                     // Remove currentMoney
                     MySQLPointer.removeMoney(uuid, currentMoney);
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
-                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
+                    p.sendMessage("§7Du hast §9%amount%§7$ aus dem Portemonnaie von §9%target%§7 entfernt.".replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
+                    t.sendMessage("§9%player% §7hat §9%amount%§7$ aus deinem Portemonnaie entfernt.".replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(currentMoney)));
 
                 } else {
                     // Remove Amount
                     MySQLPointer.removeMoney(uuid, amount);
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "RemoveMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
-                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "RemoveMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                    p.sendMessage("§7Du hast §9%amount%§7$ aus dem Portemonnaie von §9%target%§7 entfernt.".replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                    t.sendMessage("§9%player% §7hat §9%amount%§7$ aus deinem Portemonnaie entfernt.".replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
                 }
             } else if (args[2].equalsIgnoreCase("add")) {
                 // Adds Bank Money
                 MySQLPointer.addMoney(uuid, amount);
-                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "AddMoneySelf").replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
-                t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "AddMoneyOther").replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                p.sendMessage("§7Du hast §9%amount%§7$ dem Portemonnaie von §9%target%§7 hinzugefügt.".replace("%target%", t.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
+                t.sendMessage("§9%player% §7hat §9%amount%§7$ zu deinem Portemonnaie hinzugefügt.".replace("%player%", p.getDisplayName()).replace("%amount%", decimalFormat.format(amount)));
 
             }
         }

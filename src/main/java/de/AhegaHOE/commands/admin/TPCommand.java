@@ -7,14 +7,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import de.AhegaHOE.util.languageHandler;
-
 public class TPCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if ((args.length == 0 || args.length > 4) && sender instanceof Player) {
             Player p = (Player) sender;
             if (p.hasPermission("tp")) {
-                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TPCommandErrorFalseArgs"));
+                p.sendMessage("§cFehler: Benutze /tp [Spieler] <Spieler> oder /tp [Spieler] <x> <y> <z>");
             }
         }
         if (args.length == 1 && sender instanceof Player) {
@@ -24,10 +22,12 @@ public class TPCommand implements CommandExecutor {
                 Player t = Bukkit.getPlayer(args[0]);
                 if (t != null) {
                     p.teleport(t.getLocation());
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportSelfToPlayer").replace("%target%", t.getDisplayName()));
-                    t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToSelf").replace("%player%", p.getDisplayName()));
+                    p.sendMessage("§7Du hast dich zu §9%target% §7teleportiert.".replace("%target%", t.getDisplayName()));
+                    if (!Vanish.isVanished(p)) {
+                        t.sendMessage("§9%player% §7hat sich zu dir teleportiert.".replace("%player%", p.getDisplayName()));
+                    }
                 } else {
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TPCommandErrorFalseArgsTeleportPlayerToPlayer1"));
+                    p.sendMessage("§cFehler: Benutze /tp [Spieler] <Spieler>");
                 }
             }
 
@@ -39,18 +39,18 @@ public class TPCommand implements CommandExecutor {
                 if (t != null && t1 != null) {
                     t.teleport(t1.getLocation());
                     if (t1.getName().equals(p.getName())) {
-                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportOtherToSelfMessageSelf").replace("%target%", t.getDisplayName()));
-                        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToSelfMessageOther").replace("%player%", p.getDisplayName()));
+                        p.sendMessage("§7Du hast §9%target% §7zu dir teleportiert.".replace("%target%", t.getDisplayName()));
+                        t.sendMessage("§9%player% §7hat dich zu sich teleportiert.".replace("%player%", p.getDisplayName()));
                     } else {
-                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportOtherToOtherSelf").replace("%target%", t.getDisplayName()).replace("%target1%", t1.getDisplayName()));
+                        p.sendMessage("§7Du hast §9%target% §7zu §9%target1% §7teleportiert.".replace("%target%", t.getDisplayName()).replace("%target1%", t1.getDisplayName()));
 
-                        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToOtherOther").replace("%player%", p.getDisplayName()).replace("%target1%", t1.getDisplayName()));
+                        t.sendMessage("§9%player% §7hat dich zu §9%target1% §7teleportiert.".replace("%player%", p.getDisplayName()).replace("%target1%", t1.getDisplayName()));
 
-                        t1.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t1), "TeleportOtherToOtherTarget1").replace("%player%", p.getDisplayName()).replace("%target%", t.getDisplayName()));
+                        t1.sendMessage("§9%player% §7hat §9%target% §7zu dir teleportiert.".replace("%player%", p.getDisplayName()).replace("%target%", t.getDisplayName()));
                     }
 
                 } else {
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TPCommandErrorFalseArgsTeleportPlayerToPlayer"));
+                    p.sendMessage("§cFehler: Benutze /tp <Spieler> [Spieler]");
                 }
             }
         } else if (args.length == 3 && sender instanceof Player) {
@@ -63,9 +63,9 @@ public class TPCommand implements CommandExecutor {
                     Location loc = new Location(p.getWorld(), x, y, z, p.getLocation().getYaw(),
                             p.getLocation().getPitch());
                     p.teleport(loc);
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportSelfToCoordinate").replace("%x%", args[0]).replace("%y%", args[1]).replace("%z%", args[2]));
+                    p.sendMessage("§7Du hast dich zu den Koordinaten: §9%x%§7, §9%y%§7, §9%z% §7teleportiert.".replace("%x%", args[0]).replace("%y%", args[1]).replace("%z%", args[2]));
                 } else {
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TPCommandErrorFalseArgsTeleportToCoordinates"));
+                    p.sendMessage("§cFehler: Benutze /tp <x> <y> <z>");
                 }
             }
         } else if (args.length == 4 && sender instanceof Player) {
@@ -80,8 +80,8 @@ public class TPCommand implements CommandExecutor {
                         Location loc = new Location(p.getWorld(), x, y, z, p.getLocation().getYaw(),
                                 p.getLocation().getPitch());
                         t.teleport(loc);
-                        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "TeleportOtherToCoordinateSelf").replace("%target%", t.getDisplayName()).replace("%x%", "" + x).replace("%y%", "" + y).replace("%z%", "" + z));
-                        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "TeleportOtherToCoordinateOther").replace("%player%", p.getDisplayName()).replace("%x%", "" + x).replace("%y%", "" + y).replace("%z%", "" + z));
+                        p.sendMessage("§7Du hast §9%target% §7zu den Koordinaten: §9%x%§7, §9%y%§7, §9%z% §7teleportiert.".replace("%target%", t.getDisplayName()).replace("%x%", "" + x).replace("%y%", "" + y).replace("%z%", "" + z));
+                        t.sendMessage("§7Du wurdest von §9%player% §7zu den Koordinaten: §9%x%§7, §9%y%§7, §9%z% §7teleportiert.".replace("%player%", p.getDisplayName()).replace("%x%", "" + x).replace("%y%", "" + y).replace("%z%", "" + z));
                     }
                 }
             }

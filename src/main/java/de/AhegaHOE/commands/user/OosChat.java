@@ -6,8 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import de.AhegaHOE.util.languageHandler;
-
 public class OosChat implements CommandExecutor {
 
 
@@ -22,13 +20,12 @@ public class OosChat implements CommandExecutor {
 
                 for (Player t : Bukkit.getOnlinePlayers()) {
                     if (p.getLocation().distance(t.getLocation()) <= 20.0D) {
-                        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "OutOfSituationAdds").replace("%player%", p.getDisplayName()).replace("%message%", msg));
+                        t.sendMessage("§c( %player% §cfügt hinzu: %message% )".replace("%player%", p.getDisplayName()).replace("%message%", msg));
                     }
                 }
 
             } else
-                sender.sendMessage(
-                        languageHandler.getMessage(languageHandler.getLocale(p), "OosChatCommandErrorFalseArgs"));
+                sender.sendMessage("§cFehler: Benutze /oos <Nachricht>");
 
 
         }

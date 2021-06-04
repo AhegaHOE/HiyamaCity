@@ -1,8 +1,6 @@
 package de.AhegaHOE.listener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import de.AhegaHOE.commands.user.AfkCommand;
-import de.AhegaHOE.util.languageHandler;
 import net.md_5.bungee.api.ChatColor;
 
 public final class AFKCheck implements Listener {
@@ -36,7 +33,7 @@ public final class AFKCheck implements Listener {
                         for (Player t : Bukkit.getOnlinePlayers()) {
                             if (p.getLocation().distance(t.getLocation()) <= 8.0D) {
                                 t.sendMessage(ChatColor.GOLD + p.getDisplayName()
-                                        + languageHandler.getMessage(languageHandler.getLocale(t), "Enter"));
+                                        + " §6hat den AFK-Modus betreten.");
                             }
                         }
                     }

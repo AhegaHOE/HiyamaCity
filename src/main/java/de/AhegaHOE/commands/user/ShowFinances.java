@@ -2,7 +2,6 @@ package de.AhegaHOE.commands.user;
 
 import de.AhegaHOE.MySQL.MySQLPointer;
 import de.AhegaHOE.util.DecimalSeperator;
-import de.AhegaHOE.util.languageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,16 +19,16 @@ public class ShowFinances implements CommandExecutor {
         if (!(sender instanceof Player)) return false;
         Player p = (Player) sender;
         if (args.length != 1) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "ShowFinancesFalseArgs"));
+            p.sendMessage("§cFehler: Benutze /showfinances <Spieler>");
             return false;
         }
         Player t = Bukkit.getPlayer(args[0]);
         if (t == null) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PlayerNotFound"));
+            p.sendMessage("§cFehler: Der angegebene Spieler wurde nicht gefunden.");
             return false;
         }
         if (!(p.getLocation().distance(t.getLocation()) <= 8.0D)) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PlayerTooFarAway"));
+            p.sendMessage("§cFehler: Der angegebene Spieler ist zu weit weg.");
             return false;
         }
 
@@ -38,9 +37,9 @@ public class ShowFinances implements CommandExecutor {
 
         DecimalFormat decimalFormat = DecimalSeperator.prepareFormat(',', '.', false, (byte) 0);
 
-        p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "ShowFinancesMessageSelf").replace("%target%", t.getDisplayName()));
-        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "ShowFinancesMessageOther").replace("%player%", p.getDisplayName()));
-        t.sendMessage(languageHandler.getMessage(languageHandler.getLocale(t), "ShowFinancesMoney").replace("%money%", "" + decimalFormat.format(money)).replace("%bank%", "" + decimalFormat.format(bank)));
+        p.sendMessage("§7Du hast §9%target% §7deine Finanzen gezeigt.".replace("%target%", t.getDisplayName()));
+        t.sendMessage("§9%player% §7hat dir deren Finanzen gezeigt.".replace("%player%", p.getDisplayName()));
+        t.sendMessage("§7Geld: §9%money%§7$, Bank: §9%bank%§7$".replace("%money%", "" + decimalFormat.format(money)).replace("%bank%", "" + decimalFormat.format(bank)));
 
         return false;
     }

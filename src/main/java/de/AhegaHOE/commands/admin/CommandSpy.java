@@ -1,6 +1,5 @@
 package de.AhegaHOE.commands.admin;
 
-import de.AhegaHOE.util.languageHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,10 +24,10 @@ public class CommandSpy implements CommandExecutor {
             return true;
         }
         if (isCommandSpying(p)) {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "CommandSpyDisable"));
+            p.sendMessage("§cCommandSpy deaktiviert!");
             removeCommandSpying(p);
         } else {
-            p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "CommandSpyEnable"));
+            p.sendMessage("§aCommandSpy aktiviert!");
             setCommandSpying(p);
         }
 

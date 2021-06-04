@@ -1,20 +1,14 @@
 package de.AhegaHOE.commands.user;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team.Option;
-import org.bukkit.scoreboard.Team.OptionStatus;
 
 import de.AhegaHOE.listener.AFKCheck;
-import de.AhegaHOE.util.languageHandler;
 import net.md_5.bungee.api.ChatColor;
 
 public class AfkCommand implements CommandExecutor {
@@ -31,7 +25,7 @@ public class AfkCommand implements CommandExecutor {
                     for (Player t : Bukkit.getOnlinePlayers()) {
                         if (p.getLocation().distance(t.getLocation()) <= 8.0D) {
                             t.sendMessage(ChatColor.GOLD + p.getDisplayName()
-                                    + languageHandler.getMessage(languageHandler.getLocale(t), "Leave"));
+                                    + " §6hat den AFK-Modus verlassen.");
                             AFKCheck.afkModeTimeStamp.remove(p.getName(), System.currentTimeMillis());
                         }
                     }
@@ -40,7 +34,7 @@ public class AfkCommand implements CommandExecutor {
                     for (Player t : Bukkit.getOnlinePlayers()) {
                         if (p.getLocation().distance(t.getLocation()) <= 8.0D) {
                             t.sendMessage(ChatColor.GOLD + p.getDisplayName()
-                                    + languageHandler.getMessage(languageHandler.getLocale(t), "Enter"));
+                                    + " §6hat den AFK-Modus betreten.");
                             AFKCheck.afkModeTimeStamp.put(p.getName(), System.currentTimeMillis());
                         }
                     }

@@ -1,6 +1,5 @@
 package de.AhegaHOE.commands.admin;
 
-import de.AhegaHOE.util.languageHandler;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -22,20 +21,20 @@ public class ClearChat implements CommandExecutor {
                 for (Player all : Bukkit.getOnlinePlayers()) {
                     if (!all.hasPermission("cc.bypass")) {
                         clearChat(all);
-                        sender.sendMessage(ChatColor.GREEN + "Chat cleared!");
+                        sender.sendMessage(ChatColor.GREEN + "Chat gecleart!");
                     }
                 }
             } else if (args.length == 1) {
                 Player t = Bukkit.getPlayer(args[0]);
                 if (t == null) {
-                    sender.sendMessage(languageHandler.getMessage("de", "PlayerNotFound"));
+                    sender.sendMessage("§cFehler: Der angegebene Spieler wurde nicht gefunden.");
                     return true;
                 }
-                sender.sendMessage("§aChat of " + t.getDisplayName() + "§a cleared!");
+                sender.sendMessage("§aChat von " + t.getDisplayName() + "§a wurde gecleart!");
                 clearChat(t);
 
             } else {
-                sender.sendMessage(languageHandler.getMessage("de", "ClearChatFalseArgs"));
+                sender.sendMessage("§cFehler: Benutze /clearchat [Spieler]");
                 return true;
             }
 
@@ -53,20 +52,20 @@ public class ClearChat implements CommandExecutor {
                     }
                 }
 
-                Bukkit.broadcastMessage(languageHandler.getMessage(languageHandler.getLocale(p), "ChatClear").replace("%player%", p.getDisplayName()));
+                Bukkit.broadcastMessage("§4§l%player% §4§lhat den Chat gecleart!".replace("%player%", p.getDisplayName()));
 
             } else if (args.length == 1) {
                 Player t = Bukkit.getPlayer(args[0]);
                 if (t == null) {
-                    p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "PlayerNotFound"));
+                    p.sendMessage("§cFehler: Der angegebene Spieler wurde nicht gefunden.");
                     return true;
                 }
 
                 clearChat(t);
-                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "ChatClearOther").replace("%player%", t.getDisplayName()));
+                p.sendMessage("§7Du hast den §aChat§7 von §9%player%§7 gecleart.".replace("%player%", t.getDisplayName()));
 
             } else {
-                p.sendMessage(languageHandler.getMessage(languageHandler.getLocale(p), "ClearChatFalseArgs"));
+                p.sendMessage("§cFehler: Benutze /clearchat [Spieler]");
                 return true;
             }
         }
