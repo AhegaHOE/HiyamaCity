@@ -79,3 +79,18 @@ commands:
     description: Allows the player to register a atm.
   forum:
     description: Allows the player to open the forum.
+  help:
+    description: Allows the player to get help.
+    aliases: [ report, ticket ]
+  cancelreport:
+    description: Allows the player to cancel the report queue.
+  acceptreport:
+    description: Allows the player to accept a report.
+  closereport:
+    description: Allows the player to close a report.
+  togglereportchat:
+    description: Allows the player to toggle the report chat.
+    aliases: [ togglerc, trc ]
+  calculate:
+    description: Allows the player to calculate math expressions.
+    aliases: [ calc, rechner, taschenrechner, calculator ]

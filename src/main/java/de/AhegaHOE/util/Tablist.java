@@ -17,7 +17,7 @@ public class Tablist {
 
         int playerCount = Bukkit.getOnlinePlayers().size() - Vanish.vanishedPlayers.size();
 
-        String header = "§b§lHiyamaCity §r§7- §cFantasy §7§ §cReallife Roleplay";
+        String header = "§b§lHiyamaCity §r§7- §cFantasy §7& §cReallife Roleplay";
         String footer = "§7%current%§8/§7%max%§a Spieler online.".replace("%current%", "" + playerCount).replace("%max%", "" + Bukkit.getMaxPlayers());
 
         IChatBaseComponent tabHeader = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + header + "\"}");

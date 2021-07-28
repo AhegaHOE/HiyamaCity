@@ -18,7 +18,6 @@ public class StatsCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
         if (!(sender instanceof Player) || args.length == 1) {
             Player t = Bukkit.getPlayer(args[0]);
-            // TODO: STATS COMMAND FÜR DIE CONSOLE
         }
 
         if (args.length == 0) {

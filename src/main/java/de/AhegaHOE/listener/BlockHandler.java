@@ -17,10 +17,10 @@ public class BlockHandler implements Listener {
     public void onBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Block block = e.getBlock();
-        if (!(AdminDutyCommand.adminduty.contains(p.getName()) || BuildModeCommand.buildmode.contains(p.getName()))) {
+        if (!(AdminDutyCommand.adminduty.contains(p)) || BuildModeCommand.buildmode.contains(p)) {
             e.setCancelled(true);
         } else if (block.getType() == Material.ITEM_FRAME || block.getType() == Material.PAINTING) {
-            if (!(AdminDutyCommand.adminduty.contains(p.getName()))) {
+            if (!(AdminDutyCommand.adminduty.contains(p))) {
                 e.setCancelled(true);
             }
         } else {
@@ -32,7 +32,7 @@ public class BlockHandler implements Listener {
     @EventHandler
     public void onPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        if (!(AdminDutyCommand.adminduty.contains(p.getName()) || BuildModeCommand.buildmode.contains(p.getName()))) {
+        if (!(AdminDutyCommand.adminduty.contains(p) || BuildModeCommand.buildmode.contains(p))) {
             e.setCancelled(true);
         }
     }

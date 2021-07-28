@@ -62,7 +62,7 @@ public class MoneyManagementCommand implements CommandExecutor, TabCompleter {
 
         DecimalFormat decimalFormat = DecimalSeperator.prepareFormat(',', '.', false, (byte) 0);
 
-        // TODO:
+
 
         int amount = Integer.parseInt(args[3]);
         int currentMoney = MySQLPointer.getMoney(uuid);

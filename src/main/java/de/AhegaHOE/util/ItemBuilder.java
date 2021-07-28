@@ -64,6 +64,38 @@ public class ItemBuilder {
         ItemStack ATM_Sign = new ItemStack(Material.SIGN);
         items.put("ATM-Sign", ATM_Sign);
 
+        // Allgemeiner GUI Placeholder
+        ItemStack placeHolder = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 8);
+        ItemMeta placeHolderMeta = placeHolder.getItemMeta();
+        placeHolderMeta.setDisplayName(" ");
+        placeHolder.setItemMeta(placeHolderMeta);
+        items.put("Placeholder", placeHolder);
+
+        // Item für Report -> Allgemeine Frage
+        ItemStack allgemeineFrage = new ItemStack(Material.PAPER);
+        ItemMeta allgemeineFrageMeta = allgemeineFrage.getItemMeta();
+        allgemeineFrageMeta.setDisplayName(ChatColor.GREEN + "Allgemeine Frage");
+        allgemeineFrageMeta.setLore(Arrays.asList(ChatColor.GRAY + "Stelle eine allgemeine Frage."));
+        allgemeineFrage.setItemMeta(allgemeineFrageMeta);
+        items.put("Allgemeine Frage", allgemeineFrage);
+
+        // Item für Report -> Bugreport
+        ItemStack bugReport = new ItemStack(Material.BROWN_MUSHROOM);
+        ItemMeta bugReportMeta = bugReport.getItemMeta();
+        bugReportMeta.setDisplayName(ChatColor.RED + "Bugreport");
+        bugReportMeta.setLore(Arrays.asList(ChatColor.GRAY + "Melde einen Fehler."));
+        bugReport.setItemMeta(bugReportMeta);
+        items.put("Bugreport", bugReport);
+
+        // Item für Report -> Playerreport
+        ItemStack playerReport = new ItemStack(Material.DEAD_BUSH);
+        ItemMeta playerReportMeta = playerReport.getItemMeta();
+        playerReportMeta.setDisplayName(ChatColor.DARK_RED + "Clientreport");
+        playerReportMeta.setLore(Arrays.asList(ChatColor.GRAY + "Melde einen Spieler."));
+        playerReport.setItemMeta(playerReportMeta);
+        items.put("Playerreport", playerReport);
+
+
         Bukkit.getConsoleSender().sendMessage("§8[§bItemBuilder§8] " + ChatColor.GREEN + "Items erfolgreich generiert!");
     }
 }

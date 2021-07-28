@@ -13,7 +13,6 @@ public class ClearChat implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
-        // TODO: NACHRICHT FÜR DIE ANDEREN SPIELER AUßER SENDER
         if (!(sender instanceof Player)) {
 
             if (args.length == 0) {

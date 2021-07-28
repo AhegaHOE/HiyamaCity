@@ -2,6 +2,7 @@ package de.AhegaHOE.listener.AFK;
 
 import de.AhegaHOE.commands.admin.AdminDutyCommand;
 import de.AhegaHOE.commands.user.AfkCommand;
+import de.AhegaHOE.listener.AFKCheck;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,16 +14,18 @@ public class EntityDamageByEntityEvent_AFK implements Listener {
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent e) {
 
-        if (e.getDamager() instanceof Player || e.getDamager() instanceof Arrow) {
-            Player p = (Player) e.getEntity();
+        if (!(e.getDamager() instanceof Player)) {
+            return;
+        }
+        Player p = (Player) e.getDamager();
 
-            if (AfkCommand.Afk.contains(p)) {
-                if (!AdminDutyCommand.adminduty.contains(e.getDamager().getName())) {
-                    e.setCancelled(true);
-                }
+        if (AFKCheck.isAFK(p)) {
+            if (!AdminDutyCommand.isInAdminduty(p)) {
+                e.setCancelled(true);
             }
-
         }
 
     }
+
+
 }

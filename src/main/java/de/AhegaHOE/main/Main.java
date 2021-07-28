@@ -7,7 +7,12 @@ import de.AhegaHOE.commands.admin.*;
 import de.AhegaHOE.commands.admin.atm.registerATM;
 import de.AhegaHOE.commands.admin.moneymanaging.CheckFinancesCommand;
 import de.AhegaHOE.commands.admin.moneymanaging.MoneyManagementCommand;
+import de.AhegaHOE.commands.admin.ticket.AcceptReport;
+import de.AhegaHOE.commands.admin.ticket.CloseReport;
 import de.AhegaHOE.commands.user.*;
+import de.AhegaHOE.commands.user.ticket.CancelTicket;
+import de.AhegaHOE.commands.user.ticket.Ticket;
+import de.AhegaHOE.commands.user.ticket.TicketChat;
 import de.AhegaHOE.listener.AFK.*;
 import de.AhegaHOE.listener.*;
 import de.AhegaHOE.listener.PlayerJoinEvent.PlayerJoinEvent_JoinMessage;
@@ -125,6 +130,12 @@ public class Main extends JavaPlugin {
         getCommand("coinflip").setExecutor(new HeadsOrTailsCommand());
         getCommand("registeratm").setExecutor(new registerATM());
         getCommand("forum").setExecutor(new ForumCommand());
+        getCommand("help").setExecutor(new Ticket());
+        getCommand("cancelreport").setExecutor(new CancelTicket());
+        getCommand("acceptreport").setExecutor(new AcceptReport());
+        getCommand("closereport").setExecutor(new CloseReport());
+        getCommand("togglereportchat").setExecutor(new TicketChat());
+        getCommand("calculate").setExecutor(new CalculateCommand());
 
 
     }
@@ -132,8 +143,8 @@ public class Main extends JavaPlugin {
     private void loadListeners() {
         this.pm.registerEvents(new PlayerJoinEvent_WelcomePlayer(), this);
         this.pm.registerEvents(new Rank_JoinListener(), this);
+        this.pm.registerEvents(new Ticket(), this);
         this.pm.registerEvents(new Chat(), this);
-        this.pm.registerEvents(new PlayerInteractEvent_RightClickSign(), this);
         this.pm.registerEvents(new BlockHandler(), this);
         this.pm.registerEvents(new ServerListPingEvent_MOTD(), this);
         this.pm.registerEvents(new AFKCheck(), this);
@@ -166,6 +177,7 @@ public class Main extends JavaPlugin {
         this.pm.registerEvents(new PlayerQuitEvent_Vanish(), this);
         this.pm.registerEvents(new PlayerJoinEvent_NPC(), this);
 
+
     }
 
     private void loadRunnables() {
@@ -173,6 +185,7 @@ public class Main extends JavaPlugin {
         TimeSync.setTime();
         AFKCheck.checkAFK();
         PlaytimeTracker.startPlaytimeTracking();
+        //new Broadcaster().startBroadcast();
 
     }
 

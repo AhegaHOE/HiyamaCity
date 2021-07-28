@@ -1,6 +1,8 @@
 package de.AhegaHOE.commands.user;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,6 +29,14 @@ public class KussCommand implements CommandExecutor {
                 if (args[0].equalsIgnoreCase(p.getName())) {
                     p.sendMessage("§cFehler: Du kannst dich nicht selber küssen.");
                     return true;
+                }
+                Location pLoc = new Location(p.getWorld(), p.getLocation().getX(), p.getLocation().getY() + 2, p.getLocation().getZ());
+                Location tLoc = new Location(t.getWorld(), t.getLocation().getX(), t.getLocation().getY() + 2, t.getLocation().getZ());
+
+
+                for(Player all : Bukkit.getOnlinePlayers()) {
+                    all.spawnParticle(Particle.HEART, pLoc, 1);
+                    all.spawnParticle(Particle.HEART, tLoc, 1);
                 }
 
                 for (Player o : Bukkit.getOnlinePlayers()) {
