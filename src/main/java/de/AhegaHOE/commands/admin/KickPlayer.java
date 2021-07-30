@@ -24,7 +24,7 @@ public class KickPlayer implements CommandExecutor {
             if (args.length != 1) {
                 String message = "";
                 for (int i = 1; i < args.length; i++) {
-                    message += message + args[i] + " ";
+                    message += args[i] + " ";
                 }
                 t.kickPlayer("§cDu wurdest von %player%§c gekickt. \n Grund: %reason%".replace("%player%", "CONSOLE").replace("%reason%", message));
             } else {
@@ -47,7 +47,7 @@ public class KickPlayer implements CommandExecutor {
             if (args.length != 1) {
                 String message = "";
                 for (int i = 1; i < args.length; i++) {
-                    message += message + args[i] + " ";
+                    message += args[i] + " ";
                 }
                 t.kickPlayer("§cDu wurdest von %player%§c gekickt. \n Grund: %reason%".replace("%player%", p.getDisplayName()).replace("%reason%", message));
             } else {

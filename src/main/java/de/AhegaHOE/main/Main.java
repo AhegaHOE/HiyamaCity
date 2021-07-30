@@ -5,6 +5,10 @@ import de.AhegaHOE.MySQL.MySQLFile;
 import de.AhegaHOE.chat.Chat;
 import de.AhegaHOE.commands.admin.*;
 import de.AhegaHOE.commands.admin.atm.registerATM;
+import de.AhegaHOE.commands.admin.banmanaging.CheckBanID;
+import de.AhegaHOE.commands.admin.banmanaging.CheckBans;
+import de.AhegaHOE.commands.admin.banmanaging.TempBan;
+import de.AhegaHOE.commands.admin.banmanaging.Unban;
 import de.AhegaHOE.commands.admin.moneymanaging.CheckFinancesCommand;
 import de.AhegaHOE.commands.admin.moneymanaging.MoneyManagementCommand;
 import de.AhegaHOE.commands.admin.ticket.AcceptReport;
@@ -23,6 +27,7 @@ import de.AhegaHOE.listener.PlayerQuitEvent.PlayerQuitEvent_QuitMessage;
 import de.AhegaHOE.listener.PlayerQuitEvent.PlayerQuitEvent_Vanish;
 import de.AhegaHOE.ranks.RankScoreboard;
 import de.AhegaHOE.util.*;
+import de.AhegaHOE.util.banmanagement.Banning;
 import de.searlee.commands.SuicideCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -63,8 +68,8 @@ public class Main extends JavaPlugin {
             PreparedStatement ps1 = MySQL.getConnection().prepareStatement(
                     "CREATE TABLE IF NOT EXISTS MONEY (UUID VARCHAR(40), MONEY INT(255), BANK INT(255))");
             PreparedStatement ps2 = MySQL.getConnection().prepareStatement(
-                    "CREATE TABLE IF NOT EXISTS BANS (UUID VARCHAR(40), START VARCHAR(255), END VARCHAR(255), " +
-                            "REASON VARCHAR(255), PLAYERNAME VARCHAR(16), BANNER VARCHAR(16))");
+                    "CREATE TABLE IF NOT EXISTS BANS (BANID VARCHAR(255), UUID VARCHAR(40), BUUID VARCHAR(40), " +
+                            "ISACTIVE TINYINT(1), REASON VARCHAR(255), START BIGINT(100), END BIGINT(255))");
 
 
             ps.executeUpdate();
@@ -136,6 +141,12 @@ public class Main extends JavaPlugin {
         getCommand("closereport").setExecutor(new CloseReport());
         getCommand("togglereportchat").setExecutor(new TicketChat());
         getCommand("calculate").setExecutor(new CalculateCommand());
+        getCommand("testcommand").setExecutor(new TestCommand());
+        getCommand("ban").setExecutor(new Banning());
+        getCommand("unban").setExecutor(new Unban());
+        getCommand("checkbanid").setExecutor(new CheckBanID());
+        getCommand("checkbans").setExecutor(new CheckBans());
+        getCommand("tempban").setExecutor(new TempBan());
 
 
     }
@@ -176,6 +187,7 @@ public class Main extends JavaPlugin {
         this.pm.registerEvents(new PlayerQuitEvent_QuitMessage(), this);
         this.pm.registerEvents(new PlayerQuitEvent_Vanish(), this);
         this.pm.registerEvents(new PlayerJoinEvent_NPC(), this);
+        this.pm.registerEvents(new Banning(), this);
 
 
     }

@@ -34,7 +34,7 @@ public class CheckPlayer implements CommandExecutor {
                 return false;
             }
 
-            DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.forLanguageTag("de"));
+            DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, Locale.forLanguageTag("de"));
 
 
             int money = MySQLPointer.getMoney(t.getUniqueId());

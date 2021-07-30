@@ -94,3 +94,16 @@ commands:
   calculate:
     description: Allows the player to calculate math expressions.
     aliases: [ calc, rechner, taschenrechner, calculator ]
+  testcommand:
+    description: Allows the player to test commands.
+  ban:
+    description: Allows the player to ban other players.
+  unban:
+    description: Allows the player to unban other players.
+  checkbanid:
+    description: Allows the player to check the infos of certain ban-ids.
+  checkbans:
+    description: Allows the player to check the ban-ids of a player.
+  tempban:
+    description: Allows the player to tempban other players.
+    aliases: [ timeban ]

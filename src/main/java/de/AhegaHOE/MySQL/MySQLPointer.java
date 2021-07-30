@@ -305,30 +305,7 @@ public class MySQLPointer {
         }
     }
 
-    public static String getRemainingBanTime(UUID uuid) {
-        PreparedStatement ps;
-        long current = System.currentTimeMillis();
-        String end = "";
-        if (!isLong(end)) {
-            return "PERMANENT";
-        }
-        long longEnd = Long.parseLong(end);
-        long diff = current - longEnd;
 
-
-        long seconds = (diff / 1000) % 60;
-        long minutes = ((diff / (1000 * 60)) % 60);
-        long hours = ((diff / (1000 * 60 * 60)) % 24);
-        long days = ((diff / (1000 * 60 * 60 * 24)) % 7);
-        long weeks = (diff / (1000 * 60 * 60 * 24 * 7));
-
-        if(weeks == 1) {
-
-        }
-
-
-        return null;
-    }
 
     private static boolean isLong(String s) {
         try {
