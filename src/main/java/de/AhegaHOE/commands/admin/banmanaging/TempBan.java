@@ -36,9 +36,10 @@ public class TempBan implements CommandExecutor {
         long time = 0;
         int duration;
 
-        String format = args[1].substring(args[1].length() - 1, args[1].length()).toLowerCase();
+        String format = ((args[1].endsWith("min") ? args[1].substring(args[1].length() - 3, args[1].length()).toLowerCase() : args[1].substring(args[1].length() - 1, args[1].length()).toLowerCase()));
+
         try {
-             duration = Integer.parseInt(args[1].substring(0, args[1].length() - 1));
+            duration = ((args[1].endsWith("min") ? Integer.parseInt(args[1].substring(0, args[1].length() - 3)) : Integer.parseInt(args[1].substring(0, args[1].length() - 1))));
         } catch (NumberFormatException e) {
             sender.sendMessage("§cFehler: Deine Zeitangabe ist nicht gültig.\nBitte überprüfe deine Eingabe.");
             return true;
@@ -66,8 +67,16 @@ public class TempBan implements CommandExecutor {
                 time = duration * 1000 * 60 * 60;
                 break;
 
+            case "min":
+                time = duration * 1000 * 60;
+                break;
+
+            case "s":
+                time = duration * 1000;
+                break;
+
             default:
-                sender.sendMessage("§cFehler: Benutze Y (Jahre), M (Monate), W (Wochen), D (Tage) oder H (Stunden)");
+                sender.sendMessage("§cFehler: Benutze Y (Jahre), M (Monate), W (Wochen), D (Tage), H (Stunden), MIN (Sekunden) oder S (Sekunden)");
                 return true;
 
         }
@@ -88,16 +97,17 @@ public class TempBan implements CommandExecutor {
 
         Banning.createBan(uuid, ((sender instanceof Player) ? ((Player) sender).getUniqueId() : null), message, System.currentTimeMillis() + time);
         sender.sendMessage("§7Du hast §9" + args[0] + " §aerfolgreich §7für §9" + Util.getRemainingTime(System.currentTimeMillis() + time) + " §7gebannt.\nGrund: " + message);
-        if(Bukkit.getPlayer(uuid) != null) Bukkit.getPlayer(uuid).kickPlayer("§cDein Account wurde von HiyamaCity gesperrt.\n" +
-                " \n" +
-                ((message == "") ? "" : "Grund: " + message + "\n") +
-                "Ban-ID: " + Banning.getBanId(uuid) + "\n" +
-                "Tag des Bannes: §4" + formatter.format(System.currentTimeMillis()) + "§c\n" +
-                ((Banning.getBanEnd(uuid) == 0) ? "" : "Tag der Entbannung: §4" + formatter.format(Banning.getBanEnd(uuid)) + "§c\n") +
-                ((Banning.getBanEnd(uuid) == 0) ? "" : "Verbleibende Zeit: " + Util.getRemainingTime(System.currentTimeMillis() + time) + "\n") +
-                " \n" +
-                "Wir geben dir die Möglichkeit einen Entbannungsantrag in unserem Forum zu stellen.\n" +
-                "https://hiyamacity.de/forum/index.php?board/21-entbannungsanträge/");
+        if (Bukkit.getPlayer(uuid) != null)
+            Bukkit.getPlayer(uuid).kickPlayer("§8Dein Account wurde von HiyamaCity gesperrt.§5\n" +
+                    " \n" +
+                    ((message == "") ? "" : "Grund: " + message + "\n") +
+                    "Ban-ID: " + Banning.getBanId(uuid) + "\n" +
+                    "Tag des Bannes: " + formatter.format(System.currentTimeMillis()) + "\n" +
+                    ((Banning.getBanEnd(uuid) == 0) ? "" : "Tag der Entbannung: " + formatter.format(Banning.getBanEnd(uuid)) + "\n") +
+                    ((Banning.getBanEnd(uuid) == 0) ? "" : "Verbleibende Zeit: " + Util.getRemainingTime(System.currentTimeMillis() + time) + "\n") +
+                    " \n" +
+                    "§8Wir geben dir die Möglichkeit einen Entbannungsantrag in unserem Forum zu stellen.\n" +
+                    "https://hiyamacity.de/forum/index.php?board/21-entbannungsanträge/");
 
 
         return false;

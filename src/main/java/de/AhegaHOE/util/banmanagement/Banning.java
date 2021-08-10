@@ -26,7 +26,6 @@ public class Banning implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
 
-        // /ban <name> [grund]
         if (!(sender.hasPermission("system.ban"))) {
             sender.sendMessage("§cFehler: Du hast dazu keine Rechte!");
             return true;
@@ -49,12 +48,12 @@ public class Banning implements CommandExecutor, Listener {
         for (int i = 1; i < args.length; i++) {
             message += args[i] + " ";
         }
-
         message = message.trim();
+
 
         sender.sendMessage("§7Du hast §9" + args[0] + " §aerfolgreich §7gebannt.\nGrund: " + message);
 
-        Banning.createBan(uuid, ((sender instanceof Player) ? ((Player) sender).getUniqueId() : null), message);
+        Banning.createBan(uuid, ((sender instanceof Player) ? ((Player) sender).getUniqueId() : null), ((message == "") ? null : message));
 
 
         if (Bukkit.getPlayer(uuid) == null) {
@@ -65,57 +64,16 @@ public class Banning implements CommandExecutor, Listener {
         Player t = Bukkit.getPlayer(uuid);
 
         if (Bukkit.getPlayer(uuid) != null)
-            Bukkit.getPlayer(uuid).kickPlayer("§cDein Account wurde von HiyamaCity gesperrt.\n" +
+            Bukkit.getPlayer(uuid).kickPlayer("§8Dein Account wurde von HiyamaCity gesperrt.§5\n" +
                     " \n" +
                     ((message == "") ? "" : "Grund: " + message + "\n") +
                     "Ban-ID: " + Banning.getBanId(uuid) + "\n" +
-                    "Tag des Bannes: §4" + formatter.format(System.currentTimeMillis()) + "§c\n" +
-                    ((Banning.getBanEnd(uuid) == 0) ? "" : "Tag der Entbannung: §4" + formatter.format(Banning.getBanEnd(uuid)) + "§c\n") +
+                    "Tag des Bannes: " + formatter.format(System.currentTimeMillis()) + "\n" +
+                    ((Banning.getBanEnd(uuid) == 0) ? "" : "Tag der Entbannung: " + formatter.format(Banning.getBanEnd(uuid)) + "\n") +
                     ((Banning.getBanEnd(uuid) == 0) ? "" : "Verbleibende Zeit: " + Util.getRemainingTime(getBanEnd(uuid)) + "\n") +
                     " \n" +
-                    "Wir geben dir die Möglichkeit einen Entbannungsantrag in unserem Forum zu stellen.\n" +
+                    "§8Wir geben dir die Möglichkeit einen Entbannungsantrag in unserem Forum zu stellen.\n" +
                     "https://hiyamacity.de/forum/index.php?board/21-entbannungsanträge/");
-
-
-
-        /* TODO: Ban-System
-        TODO: TIMEBAN
-        TODO: CheckBans (spieler) gibt einem alle Bans von einem Spieler aus + ob aktiv oder nicht.
-        TODO: es ist möglich auf die Ban-IDs zu klicken/hovern um direkte infos zu dem ban zu bekommen.
-
-        DATABASE STRUCTURE:
-
-        » banned uuid (varchar)
-        » ban-id (varchar)
-        » ban created by uuid (varchar)
-        » ban start (long)
-        » ban end (long)
-        » vorherige bans (varchar)
-        » grund (varchar)
-        »
-
-
-
-         /ban <Spieler> [Grund]
-         » jeder ban bekommt eine ban-id
-         » vorgegebene gründe mit tabcompleter
-            » <gründe>
-         » eigene gründe
-
-         /checkban <ban-id>
-         » gibt infos über den ban
-            » spieler + uuid + hover-command (/checkplayer <spieler>)
-            » start
-            » ende
-            » grund
-            »
-
-
-            BANID, UUID, BUUID, ISACTIVE, REASON, START, END
-
-
-        */
-
 
         return false;
     }
@@ -135,20 +93,19 @@ public class Banning implements CommandExecutor, Listener {
 
         String message = getBanReason(uuid);
 
-
         if (!hasActiveBans(uuid)) {
             return;
         }
-        System.out.println(end);
-        e.disallow(PlayerLoginEvent.Result.KICK_BANNED, "§cDein Account wurde von HiyamaCity gesperrt.\n" +
+
+        e.disallow(PlayerLoginEvent.Result.KICK_BANNED, "§8Dein Account wurde von HiyamaCity gesperrt.§5\n" +
                 " \n" +
-                ((message == "") ? "" : "Grund: " + message + "\n") +
+                ((message == null) ? "" : "Grund: " + message + "\n") +
                 "Ban-ID: " + Banning.getBanId(uuid) + "\n" +
-                "Tag des Bannes: §4" + formatter.format(start) + "§c\n" +
-                ((Banning.getBanEnd(uuid) == 0) ? "" : "Tag der Entbannung: §4" + formatter.format(Banning.getBanEnd(uuid)) + "§c\n") +
+                "Tag des Bannes: " + formatter.format(start) + "\n" +
+                ((Banning.getBanEnd(uuid) == 0) ? "" : "Tag der Entbannung: " + formatter.format(Banning.getBanEnd(uuid)) + "\n") +
                 ((Banning.getBanEnd(uuid) == 0) ? "" : "Verbleibende Zeit: " + Util.getRemainingTime(end) + "\n") +
                 " \n" +
-                "Wir geben dir die Möglichkeit einen Entbannungsantrag in unserem Forum zu stellen.\n" +
+                "§8Wir geben dir die Möglichkeit einen Entbannungsantrag in unserem Forum zu stellen.\n" +
                 "https://hiyamacity.de/forum/index.php?board/21-entbannungsanträge/");
 
 
@@ -176,7 +133,6 @@ public class Banning implements CommandExecutor, Listener {
             ps.setString(1, uuid.toString());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                System.out.println(rs.getBoolean("ISACTIVE"));
                 return rs.getBoolean("ISACTIVE");
             }
         } catch (SQLException e) {
@@ -525,7 +481,7 @@ public class Banning implements CommandExecutor, Listener {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 if (rs.getBoolean("ISACTIVE")) {
-                    System.out.println(rs.getBoolean("ISACTIVE"));
+
                     return true;
                 }
             }
