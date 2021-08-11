@@ -25,7 +25,7 @@ public class PlaytimeTracker implements Listener {
 
                     if (minutes >= 60) {
                         minutes = 0;
-                        MySQLPointer.updatePlayedMinutes(p.getUniqueId(), 0);
+                        MySQLPointer.updatePlayedMinutes(p.getUniqueId(), minutes);
                         hours++;
                         MySQLPointer.updatePlayedHours(p.getUniqueId(), hours);
                     }

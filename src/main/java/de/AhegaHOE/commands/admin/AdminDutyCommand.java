@@ -20,6 +20,7 @@ public class AdminDutyCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
         if (!(sender instanceof Player)) {
             sender.sendMessage("§cDieser Befehl kann nur als Spieler ausgeführt werden!");
             return false;

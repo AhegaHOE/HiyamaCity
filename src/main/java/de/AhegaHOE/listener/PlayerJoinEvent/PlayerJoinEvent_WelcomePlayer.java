@@ -2,6 +2,7 @@ package de.AhegaHOE.listener.PlayerJoinEvent;
 
 import de.AhegaHOE.MySQL.MySQLPointer;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +21,13 @@ public class PlayerJoinEvent_WelcomePlayer implements Listener {
         if (!MySQLPointer.isUserExists(uuid)) {
             p.sendMessage(ChatColor.GOLD + "Willkommen!");
             MySQLPointer.registerPlayer(uuid, pName);
+
+            for(Player all : Bukkit.getOnlinePlayers()) {
+                if(all.hasPermission("system.newplayerregister")) {
+                    all.sendMessage("§7[§e§l!§7] §5Information: §7Der Spieler: §9" + pName + " §7ist neu auf dem Server.");
+                }
+            }
+
         } else if (MySQLPointer.isUserExists(uuid)) {
             p.sendMessage(ChatColor.GOLD + "Willkommen zurück!");
         } else {
