@@ -4,6 +4,7 @@ import com.github.theholywaffle.teamspeak3.TS3ApiAsync;
 import com.github.theholywaffle.teamspeak3.api.ClientProperty;
 import com.github.theholywaffle.teamspeak3.api.event.*;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
+import de.AhegaHOE.MySQL.MySQLPointer;
 import de.AhegaHOE.main.Main;
 import de.AhegaHOE.util.UUIDFetcher;
 
@@ -23,10 +24,17 @@ public class TeamspeakEventHandler {
                 String message = textMessageEvent.getMessage().trim();
                 int uid = textMessageEvent.getInvokerId();
                 Client c = Main.ts3Api.getClientInfo(uid);
+                if (message.length() <= 7) {
+                    Main.ts3Api.sendPrivateMessage(c.getId(), "[COLOR=#FF5555]Fehler: Benutze !verify <UUID> | Um deine UUID zu bekommen benutze Ingame /uuid[/COLOR]");
+                    return;
+                }
                 String uuid = ((message) == null) ? "" : message.substring(8);
 
                 if (!TSMySQLPointer.isUserExist(c.getUniqueIdentifier())) {
-                    Main.ts3Api.sendPrivateMessage(c.getId(), "[COLOR=#FF5555]Fehler: Du musst vorher in Minecraft /verify " + c.getUniqueIdentifier() + " eingeben.[/COLOR]");
+                    if (c.isServerQueryClient()) {
+                        return;
+                    }
+                    Main.ts3Api.sendPrivateMessage(c.getId(), "[COLOR=#FF5555]Fehler: Du musst vorher in Minecraft \"/verify " + c.getUniqueIdentifier() + "\" eingeben.[/COLOR]");
                     return;
                 }
                 // !verify <UUID>
@@ -40,19 +48,22 @@ public class TeamspeakEventHandler {
                     }
                     TSMySQLPointer.linkAccount(c, uuid);
                     TSMySQLPointer.setConfirmed(c.getUniqueIdentifier(), true);
-                    Main.ts3Api.sendPrivateMessage(c.getId(), "[COLOR=#55FF55]Dein Minecraft-Account wurde erfolgreich sychronisiert.[/COLOR]");
                     updateRank(c);
-                } else {
-                    Main.ts3Api.sendPrivateMessage(c.getId(), "[COLOR=#FF5555]Fehler: Benutze !verify <UUID> | Um deine UUID zu bekommen benutze Ingame /uuid[/COLOR]");
-
+                    Main.ts3Api.sendPrivateMessage(c.getId(), "[COLOR=#55FF55]Dein Minecraft-Account wurde erfolgreich sychronisiert.[/COLOR]");
+                    return;
                 }
+
+                Main.ts3Api.sendPrivateMessage(c.getId(), "[COLOR=#FF5555]Fehler: Benutze !verify <UUID> | Um deine UUID zu bekommen benutze Ingame /uuid[/COLOR]");
+
+
             }
 
             @Override
             public void onClientJoin(ClientJoinEvent clientJoinEvent) {
                 Client c = Main.ts3Api.getClientByUId(clientJoinEvent.getUniqueClientIdentifier());
                 String uid = c.getUniqueIdentifier();
-                TSMySQLPointer.sendVerificationMessageTeamspeak(UUID.fromString(TSMySQLPointer.getUUIDbyUID(uid)), uid);
+                TSMySQLPointer.sendVerificationMessageTeamspeak(TSMySQLPointer.getUUIDbyUID(uid), uid);
+                updateRank(c);
             }
 
             @Override
@@ -125,12 +136,17 @@ public class TeamspeakEventHandler {
     }
 
     public static void updateRank(Client c) {
+        System.out.println("RANK SET");
         String rank = (TSMySQLPointer.getRankByUID(c.getUniqueIdentifier()) == null) ? "Nicht Registriert" : TSMySQLPointer.getRankByUID(c.getUniqueIdentifier());
+        System.out.println(rank);
         String description = (TSMySQLPointer.getUUIDbyUID(c.getUniqueIdentifier()) == null) ? "" : UUIDFetcher.getName(UUID.fromString(TSMySQLPointer.getUUIDbyUID(c.getUniqueIdentifier())));
         Main.ts3Api.editClient(c.getId(), ClientProperty.CLIENT_DESCRIPTION, description);
         switch (rank) {
 
             case "Mentor": {
+                if (TSMySQLPointer.isUserExist(c.getUniqueIdentifier()) && !TSMySQLPointer.isConfirmed(c.getUniqueIdentifier())) {
+                    return;
+                }
                 if (!c.isInServerGroup(6)) {
                     removeAllGroupsExcept(c);
                     Main.ts3Api.addClientToServerGroup(6, c.getDatabaseId());
@@ -139,6 +155,9 @@ public class TeamspeakEventHandler {
             break;
 
             case "Moderator": {
+                if (TSMySQLPointer.isUserExist(c.getUniqueIdentifier()) && !TSMySQLPointer.isConfirmed(c.getUniqueIdentifier())) {
+                    return;
+                }
                 if (!c.isInServerGroup(41)) {
                     removeAllGroupsExcept(c);
                     Main.ts3Api.addClientToServerGroup(41, c.getDatabaseId());
@@ -147,6 +166,9 @@ public class TeamspeakEventHandler {
             break;
 
             case "Supporter": {
+                if (TSMySQLPointer.isUserExist(c.getUniqueIdentifier()) && !TSMySQLPointer.isConfirmed(c.getUniqueIdentifier())) {
+                    return;
+                }
                 if (!c.isInServerGroup(11)) {
                     removeAllGroupsExcept(c);
                     Main.ts3Api.addClientToServerGroup(11, c.getDatabaseId());
@@ -155,6 +177,9 @@ public class TeamspeakEventHandler {
             break;
 
             case "Youtuber": {
+                if (TSMySQLPointer.isUserExist(c.getUniqueIdentifier()) && !TSMySQLPointer.isConfirmed(c.getUniqueIdentifier())) {
+                    return;
+                }
                 if (!c.isInServerGroup(12)) {
                     removeAllGroupsExcept(c);
                     Main.ts3Api.addClientToServerGroup(12, c.getDatabaseId());
@@ -171,4 +196,5 @@ public class TeamspeakEventHandler {
     public static void isOnline(UUID uuid) {
         // TODO: Online check per MC ob der jenige in TS online ist. falls ja dann infos über den aktuellen channel und den client.
     }
+
 }

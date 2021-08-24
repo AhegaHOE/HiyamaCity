@@ -46,10 +46,17 @@ public class TSMySQLPointer {
     }
 
     public static boolean isConfirmed(String uid) {
+        if (getTSInfo(uid).isEmpty()) {
+
+            return false;
+        }
         return Boolean.parseBoolean(getTSInfo(uid).get(3));
     }
 
     public static boolean isConfirmed(UUID uuid) {
+        if (getTSInfo(uuid).isEmpty()) {
+            return false;
+        }
         return Boolean.parseBoolean(getTSInfo(uuid).get(3));
     }
 
@@ -57,14 +64,14 @@ public class TSMySQLPointer {
         if (!isUserExist(uid)) {
             return null;
         }
-        return getTSInfo(uid).get(3);
+        return getTSInfo(uid).get(2);
     }
 
-    public static String getRankByUID(UUID uuid) {
+    public static String getRankByUUID(UUID uuid) {
         if (!isUserExist(uuid)) {
             return null;
         }
-        return getTSInfo(uuid).get(3);
+        return getTSInfo(uuid).get(2);
     }
 
     public static String getUUIDbyUID(String uid) {
@@ -196,20 +203,29 @@ public class TSMySQLPointer {
         }
     }
 
-    public static void sendVerificationMessageTeamspeak(UUID uuid, String uid) {
+    public static void sendVerificationMessageTeamspeak(String uuid, String uid) {
+
+        String uuidString = ((uuid == null)? "<UUID>" : uuid);
 
         Client c = Main.ts3Api.getClientByUId(uid);
-        System.out.println(isUserExist(uid));
-        System.out.println(isConfirmed(uid));
-        if (!isUserExist(uid) || !isConfirmed(uid)) { // TODO: Es wird nicht die richtige nachricht geschickt... bitte überprüfen.
+        System.out.println("is user exist: " + isUserExist(uid));
+        System.out.println("is confirmed: " + isConfirmed(uid));
+
+        if(isUserExist(uid) && isConfirmed(uid)) {
+            return;
+        }
+
+        if (!isUserExist(uid) || isConfirmed(uid)) {
             Main.ts3Api.sendPrivateMessage(c.getId(), "[COLOR=#9a9a9a][[/COLOR][B][COLOR=#ffff55]![/COLOR][/B][COLOR=#9a9a9a]][/COLOR] Willkommen auf dem Community-Teamspeak von [COLOR=#55ffff]HiyamaCity![/COLOR][COLOR=#9a9a9a][[/COLOR][B][COLOR=#ffff55]![/COLOR][/B][COLOR=#9a9a9a]][/COLOR]\n" +
-                    "Du hast deinen Minecraft-Account noch nicht verifiziert. Schreibe dazu: /ts verify " + c.getUniqueIdentifier() + " auf unserem Minecraft-Server (HiyamaCity.de) um dich zu verifizieren.");
+                    "Du hast deinen Minecraft-Account noch nicht verifiziert. Schreibe dazu: \"/ts verify " + c.getUniqueIdentifier() + "\" auf unserem Minecraft-Server (HiyamaCity.de) um dich zu verifizieren.");
             return;
         } else if (isUserExist(uid) && !isConfirmed(uid)) {
-            Main.ts3Api.sendPrivateMessage(c.getId(), "[COLOR=#55FF55]Du hast deinen Minecraft-Account verbunden. Antworte nurnoch mit[/COLOR] [COLOR=#55FFFF]!verify " + uuid.toString() + "[/COLOR] [COLOR=#55FF55]um deine Identität zu bestätigen.[/COLOR]");
+            Main.ts3Api.sendPrivateMessage(c.getId(), "[COLOR=#55FF55]Du hast deinen Minecraft-Account verbunden. Antworte nurnoch mit[/COLOR] [COLOR=#55FFFF]\"!verify " + uuidString + "\"[/COLOR] [COLOR=#55FF55]um deine Identität zu bestätigen.[/COLOR]");
             return;
         }
     }
+
+
 
 }
 

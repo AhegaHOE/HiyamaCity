@@ -3,6 +3,7 @@ package de.AhegaHOE.commands.user;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import de.AhegaHOE.MySQL.MySQLPointer;
 import de.AhegaHOE.main.Main;
+import de.AhegaHOE.util.UUIDFetcher;
 import de.AhegaHOE.util.ts.TSMySQLPointer;
 import de.AhegaHOE.util.ts.TeamspeakEventHandler;
 import net.md_5.bungee.api.ChatColor;
@@ -49,11 +50,24 @@ public class TeamspeakCommand implements CommandExecutor {
                 TeamspeakEventHandler.updateRank(c);
                 Main.ts3Api.sendPrivateMessage(c.getId(), "[COLOR=#55ff55]Deine Teamspeak-Sychronisation wurde erfolgreich aufgehoben![/COLOR]");
                 p.sendMessage("§aDeine Teamspeak-Sychronisation wurde erfolgreich aufgehoben!");
-
+                TSMySQLPointer.sendVerificationMessageTeamspeak(uuid.toString(), c.getUniqueIdentifier());
             }
             break;
 
             case "info": {
+                if (!TSMySQLPointer.isUserExist(uuid)) {
+                    p.sendMessage("§cFehler: Dein Minecraft-Account ist nicht sychronisiert.");
+                    return true;
+                }
+
+                String uid = TSMySQLPointer.getUIDbyUUID(uuid);
+                Boolean confirmed = TSMySQLPointer.isConfirmed(uuid);
+
+                p.sendMessage(" \n§6Teamspeak-Info's von " + UUIDFetcher.getName(uuid) + "\n " +
+                        "\n" +
+                        "§7UUID: §9" + uuid.toString() + "\n" +
+                        "§7Eindeutige-ID: §9" + uid + "\n" +
+                        "§7Bestätigt: " + ((confirmed) ? "§aJa" : "§cNein") + "\n ");
 
             }
             break;
@@ -86,7 +100,7 @@ public class TeamspeakCommand implements CommandExecutor {
                 }
                 p.sendMessage("§aDein Teamspeak-Account wurde erfolgreich verbunden. Du hast einen Nachricht von unserem Bot bekommen.\nEr gibt dir weitere Infos wie du fortfahren musst.");
                 TSMySQLPointer.registerTeamspeakSynchronization(uuid, args[1]);
-                TSMySQLPointer.sendVerificationMessageTeamspeak(uuid, args[1]);
+                TSMySQLPointer.sendVerificationMessageTeamspeak(uuid.toString(), args[1]);
             }
             break;
 

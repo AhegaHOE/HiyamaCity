@@ -75,7 +75,6 @@ public class Main extends JavaPlugin {
     }
 
 
-
     public void onEnable() {
         instance = this;
         loadConfigs();
@@ -88,8 +87,6 @@ public class Main extends JavaPlugin {
         MySQL.connect();
         loadTeamspeakBot();
         ItemBuilder.generateItems();
-
-
 
 
         try {
@@ -133,8 +130,12 @@ public class Main extends JavaPlugin {
         ts3Api.setNickname("HiyamaCity-Bot");
         TeamspeakEventHandler.loadEvents();
         Bukkit.getConsoleSender().sendMessage("§8[§bTeamspeak-Bot§8] §aTeamspeak-Bot wurde gestartet!");
-        for(Client c : Main.ts3Api.getClients()) {
+        for (Client c : Main.ts3Api.getClients()) {
+            if (c.isServerQueryClient()) {
+                return;
+            }
             TeamspeakEventHandler.updateRank(c);
+            TSMySQLPointer.sendVerificationMessageTeamspeak(TSMySQLPointer.getUUIDbyUID(c.getUniqueIdentifier()), c.getUniqueIdentifier());
         }
     }
 
