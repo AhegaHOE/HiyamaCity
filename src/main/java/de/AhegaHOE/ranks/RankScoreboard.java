@@ -44,7 +44,7 @@ public class RankScoreboard {
 
     public static void setPrefix(Player p) {
         String team;
-        if (p.hasPermission("rank.Mentor")) {
+        if (p.hasPermission("rank.mentor")) {
             team = "00000Mentor";
         } else if (p.hasPermission("rank.moderator")) {
             team = "00001Moderator";
@@ -60,6 +60,19 @@ public class RankScoreboard {
         for (Player all : Bukkit.getOnlinePlayers()) {
             all.setScoreboard(sm);
         }
+    }
+
+    public static String getRankName(Player p) {
+        if (p.hasPermission("rank.mentor")) {
+            return "Mentor";
+        } else if (p.hasPermission("rank.moderator")) {
+            return "Moderator";
+        } else if (p.hasPermission("rank.supporter")) {
+            return "Supporter";
+        } else {
+            return "Spieler";
+        }
+
     }
 
 
