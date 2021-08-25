@@ -1,5 +1,6 @@
 package de.AhegaHOE.MySQL;
 
+import de.AhegaHOE.ranks.RankScoreboard;
 import org.bukkit.Bukkit;
 
 import java.sql.PreparedStatement;
@@ -307,6 +308,22 @@ public class MySQLPointer {
 
 
 
+
+
+    public static boolean teamspeakUserRegistered(UUID uuid) {
+        try {
+            PreparedStatement ps;
+            ps = MySQL.getConnection().prepareStatement("SELECT * FROM TS_DATA WHERE UUID = ?");
+            ps.setString(1, uuid.toString());
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     private static boolean isLong(String s) {
         try {
             Long.parseLong(s);
@@ -316,4 +333,18 @@ public class MySQLPointer {
         }
     }
 
+    public static String getUIdByUUID(UUID uuid) {
+
+        try {
+            PreparedStatement ps;
+            ps = MySQL.getConnection().prepareStatement("SELECT * FROM TS_DATA WHERE UUID = ?");
+            ps.setString(1, uuid.toString());
+            ResultSet rs = ps.executeQuery();
+            return rs.getString("UUID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

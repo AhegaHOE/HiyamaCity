@@ -107,3 +107,9 @@ commands:
   tempban:
     description: Allows the player to tempban other players.
     aliases: [ timeban ]
+  ts:
+    description: Allows the player to see infomation about the teamspeak server.
+    aliases: [ teamspeak, teamspeak3, ts3 ]
+  uuid:
+    description: Allows the player to get their uuid.
+    aliases: [ uniqueuserid, userid ]

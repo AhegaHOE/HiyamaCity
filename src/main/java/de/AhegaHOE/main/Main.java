@@ -1,5 +1,12 @@
 package de.AhegaHOE.main;
 
+import com.github.theholywaffle.teamspeak3.TS3Api;
+import com.github.theholywaffle.teamspeak3.TS3ApiAsync;
+import com.github.theholywaffle.teamspeak3.TS3Config;
+import com.github.theholywaffle.teamspeak3.TS3Query;
+import com.github.theholywaffle.teamspeak3.api.reconnect.ConnectionHandler;
+import com.github.theholywaffle.teamspeak3.api.reconnect.ReconnectStrategy;
+import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import de.AhegaHOE.MySQL.MySQL;
 import de.AhegaHOE.MySQL.MySQLFile;
 import de.AhegaHOE.chat.Chat;
@@ -28,6 +35,8 @@ import de.AhegaHOE.listener.PlayerQuitEvent.PlayerQuitEvent_Vanish;
 import de.AhegaHOE.ranks.RankScoreboard;
 import de.AhegaHOE.util.*;
 import de.AhegaHOE.util.banmanagement.Banning;
+import de.AhegaHOE.util.ts.TSMySQLPointer;
+import de.AhegaHOE.util.ts.TeamspeakEventHandler;
 import de.searlee.commands.SuicideCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -37,8 +46,26 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class Main extends JavaPlugin {
+
+    public static final TS3Config ts3Config = new TS3Config().setHost("localhost").setFloodRate(TS3Query.FloodRate.UNLIMITED).setEnableCommunicationsLogging(true).setReconnectStrategy(ReconnectStrategy.exponentialBackoff()).setConnectionHandler(new ConnectionHandler() {
+
+        @Override
+        public void onConnect(TS3Api ts3Api) {
+            Bukkit.getConsoleSender().sendMessage("§8[§bTeamspeak-Bot§8] §aTeamspeak-Bot connected!");
+        }
+
+        @Override
+        public void onDisconnect(TS3Query ts3Query) {
+            ts3Query.exit();
+            Bukkit.getConsoleSender().sendMessage("§8[§bTeamspeak-Bot§8] §cTeamspeak-Bot disconnected!");
+        }
+    });
+
+    public static final TS3Query ts3Query = new TS3Query(ts3Config);
+    public static final TS3Api ts3Api = ts3Query.getApi();
 
     PluginManager pm = Bukkit.getPluginManager();
     private static Main instance;
@@ -46,6 +73,7 @@ public class Main extends JavaPlugin {
     public static Main getInstance() {
         return instance;
     }
+
 
     public void onEnable() {
         instance = this;
@@ -57,8 +85,8 @@ public class Main extends JavaPlugin {
         file.setStandard();
         file.readData();
         MySQL.connect();
+        loadTeamspeakBot();
         ItemBuilder.generateItems();
-        NPCHandler.spawnNPCs();
 
 
         try {
@@ -70,14 +98,18 @@ public class Main extends JavaPlugin {
             PreparedStatement ps2 = MySQL.getConnection().prepareStatement(
                     "CREATE TABLE IF NOT EXISTS BANS (BANID VARCHAR(255), UUID VARCHAR(40), BUUID VARCHAR(40), " +
                             "ISACTIVE TINYINT(1), REASON VARCHAR(255), START BIGINT(100), END BIGINT(255))");
+            PreparedStatement ps3 = MySQL.getConnection().prepareStatement(
+                    "CREATE TABLE IF NOT EXISTS TS_DATA (UUID VARCHAR(40), UID VARCHAR(255), RANK VARCHAR(255), CONFIRMED TINYINT(1))");
 
 
             ps.executeUpdate();
             ps1.executeUpdate();
             ps2.executeUpdate();
+            ps3.executeUpdate();
             ps.close();
             ps1.close();
             ps2.close();
+            ps3.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,7 +122,25 @@ public class Main extends JavaPlugin {
         }
     }
 
+    private void loadTeamspeakBot() {
+        Bukkit.getConsoleSender().sendMessage("§8[§bTeamspeak-Bot§8] §6Teamspeak-Bot wird gestartet...");
+        ts3Query.connect();
+        ts3Api.login("serveradmin", "3EL8-TaKX_CVFBg$eeMA");
+        ts3Api.selectVirtualServerByPort(9987);
+        ts3Api.setNickname("HiyamaCity-Bot");
+        TeamspeakEventHandler.loadEvents();
+        Bukkit.getConsoleSender().sendMessage("§8[§bTeamspeak-Bot§8] §aTeamspeak-Bot wurde gestartet!");
+        for (Client c : Main.ts3Api.getClients()) {
+            if (c.isServerQueryClient()) {
+                return;
+            }
+            TeamspeakEventHandler.updateRank(c);
+            TSMySQLPointer.sendVerificationMessageTeamspeak(TSMySQLPointer.getUUIDbyUID(c.getUniqueIdentifier()), c.getUniqueIdentifier());
+        }
+    }
+
     public void onDisable() {
+        ts3Query.exit();
         Vanish.removeAllPlayersVanish();
         MySQL.disconnect();
     }
@@ -147,6 +197,8 @@ public class Main extends JavaPlugin {
         getCommand("checkbanid").setExecutor(new CheckBanID());
         getCommand("checkbans").setExecutor(new CheckBans());
         getCommand("tempban").setExecutor(new TempBan());
+        getCommand("ts").setExecutor(new TeamspeakCommand());
+        getCommand("uuid").setExecutor(new UUIDCommand());
 
 
     }
@@ -200,6 +252,5 @@ public class Main extends JavaPlugin {
         //new Broadcaster().startBroadcast();
 
     }
-
 
 }
