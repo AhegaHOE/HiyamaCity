@@ -10,9 +10,7 @@ import de.AhegaHOE.util.UUIDFetcher;
 
 import java.util.UUID;
 
-
 public class TeamspeakEventHandler {
-
 
     public static void loadEvents() {
         Main.ts3Api.registerAllEvents();
